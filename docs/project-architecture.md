@@ -1,325 +1,442 @@
 <!--
 ---
 title: "Project Architecture"
-description: "High-level architecture design and strategic framework for DESI cosmic void analysis, including system components, data flows, and integration patterns"
+description: "Comprehensive system architecture for DESI cosmic void analysis project, including infrastructure components, data flow, scientific workflows, and integration patterns supporting environmental quenching research"
 author: "VintageDon"
 ai_contributor: "Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)"
-date: "2025-07-01"
+date: "2025-07-02"
 version: "1.0"
 status: "Published"
 tags:
-- type: project-doc
+- type: project-overview
 - domain: cosmic-voids
-- domain: architecture
-- tech: desi-dr1
+- domain: galaxy-evolution
 - tech: postgresql-16
+- tech: python-astronomy
+- tech: desi-dr1
 - phase: project-setup
 related_documents:
-- "[Project Overview](../README.md)"
 - "[Data Pipeline Design](data-pipeline-design.md)"
 - "[Infrastructure Overview](../infrastructure/README.md)"
-- "[Implementation Roadmap](../ROADMAP.md)"
-- "[Scientific Methodology](scientific-methodology.md)"
+- "[Database Infrastructure](../infrastructure/database/README.md)"
+- "[PostgreSQL Implementation](../infrastructure/database/postgresql-implementation.md)"
 scientific_context:
   objective: "Environmental quenching analysis"
   dataset: "DESI DR1 BGS"
-  methods: ["architecture-design", "system-integration"]
+  methods: ["spatial-crossmatch", "statistical-comparison", "infrastructure-integration"]
 ---
 -->
 
-# 🏛️ **Project Architecture**
+# 🏗️ **Project Architecture**
 
-This document provides the high-level architecture design and strategic framework for DESI cosmic void analysis, defining system components, data flows, and integration patterns that enable systematic environmental quenching research using DESI DR1 BGS data.
+This document provides comprehensive system architecture for the DESI cosmic void analysis project, defining infrastructure components, data flow patterns, scientific workflows, and integration strategies that enable systematic environmental quenching research using 27.6GB of DESI DR1 data across distributed computing infrastructure.
 
 # 🎯 **1. Introduction**
 
-This section establishes the foundational context for project architecture within the DESI cosmic void analysis project, defining the systematic design approach that enables scalable, efficient, and reliable scientific computing and analysis workflows.
+This section establishes the foundational context for DESI cosmic void analysis project architecture, defining the systematic approach to distributed scientific computing that enables large-scale astronomical research and environmental quenching studies.
 
 ## **1.1 Purpose**
 
-This subsection explains how the project architecture enables systematic environmental quenching research through optimized system design while supporting efficient data processing, analysis workflows, and scientific result validation for cosmic void studies.
+This subsection explains how the project architecture enables systematic integration of infrastructure components while supporting scalable scientific computing workflows for cosmic void environmental analysis.
 
-The project architecture functions as the systematic design foundation for DESI cosmic void analysis, transforming complex scientific requirements into coherent, scalable, and maintainable system design supporting environmental quenching research workflows. The architecture provides clear separation between data management, analysis processing, and result generation while enabling efficient integration between PostgreSQL database systems, Python scientific computing, and statistical analysis frameworks. The design supports systematic scientific research through modular component organization, optimized data flows, and comprehensive integration patterns essential for reproducible environmental classification and galaxy evolution validation.
+The DESI cosmic void analysis project architecture functions as the systematic blueprint for integrating distributed computing infrastructure, astronomical data processing pipelines, and scientific analysis workflows that enable environmental quenching research at scale. The architecture provides standardized component integration patterns, systematic data flow management, and scalable computing resource allocation that supports processing 27.6GB of DESI DR1 survey data across specialized virtual machines. The design enables reproducible scientific workflows through modular component architecture, comprehensive monitoring integration, and systematic resource optimization essential for astronomical research requiring both high-performance data processing and collaborative development environments.
 
 ## **1.2 Scope**
 
-This subsection defines the boundaries of project architecture coverage within the DESI cosmic void analysis project.
+This subsection defines the boundaries of project architecture coverage within the DESI cosmic void analysis scientific computing environment.
 
 | **In Scope** | **Out of Scope** |
 |--------------|------------------|
-| System architecture design and component integration | Detailed implementation code and configuration specifics |
-| Data flow patterns and processing workflows | Infrastructure deployment and operational procedures |
-| Technology stack selection and integration approaches | Hardware procurement and physical infrastructure management |
-| Security architecture and compliance framework design | Specific security configuration and implementation details |
-| Performance architecture and optimization strategies | Detailed performance tuning and system optimization |
+| Virtual machine architecture and resource allocation | Physical hardware specifications and deployment procedures |
+| Database infrastructure and performance optimization | Low-level PostgreSQL configuration and tuning details |
+| Scientific workflow integration and data flow patterns | Detailed algorithm implementation and scientific methodology |
+| Monitoring and operational architecture components | Specific alerting configurations and incident response procedures |
+| Development environment and collaborative access patterns | Individual developer toolchain setup and personal configurations |
+| Security architecture and access control frameworks | Detailed security configuration and compliance implementation |
 
 ## **1.3 Target Audience**
 
-This subsection identifies stakeholders who interact with project architecture and the technical background required for effective system design understanding and implementation planning.
+This subsection identifies stakeholders who design, implement, or interact with project architecture components and the technical background required for effective system understanding and management.
 
-**Primary Audience:** System architects, technical leads, and infrastructure engineers responsible for system design and implementation planning. **Secondary Audience:** Scientific researchers, database administrators, and software developers who need to understand system design for effective collaboration and implementation. **Required Background:** Understanding of system architecture concepts, database design principles, and scientific computing frameworks.
+**Primary Audience:** System architects, infrastructure engineers, and scientific software developers responsible for designing and implementing distributed computing environments for astronomical research. **Secondary Audience:** Database administrators, DevOps engineers, and astronomical researchers who need to understand system capabilities and integration patterns. **Required Background:** Understanding of distributed systems architecture, virtualization technologies, database design principles, and familiarity with scientific computing infrastructure and astronomical data processing requirements.
 
 ## **1.4 Overview**
 
-This subsection provides context about project architecture organization and its relationship to the broader DESI cosmic void analysis project and scientific research objectives.
+This subsection provides context about project architecture organization and its relationship to the broader astronomical research ecosystem and DESI data processing requirements.
 
-The project architecture establishes systematic design foundation, transforming scientific requirements into coherent, efficient, and maintainable system design that enables reliable environmental quenching research, systematic data processing, and reproducible scientific validation through comprehensive architecture frameworks and strategic technology integration.
+The DESI cosmic void analysis project architecture establishes systematic integration foundation, transforming distributed infrastructure components into coherent, scalable, and maintainable scientific computing environment that enables environmental quenching research, collaborative development workflows, and systematic data processing through comprehensive component integration, standardized communication patterns, and optimized resource allocation designed for astronomical research requirements.
 
 # 🔗 **2. Dependencies & Relationships**
 
-This section maps how project architecture integrates with system components and establishes design relationships that enable systematic scientific computing and environmental research workflows.
+This section maps how project architecture components integrate with infrastructure services and establishes systematic relationships that enable distributed scientific computing and collaborative research workflows.
 
 ## **2.1 Related Services**
 
-This subsection identifies system components that implement or depend on project architecture design.
+This subsection identifies infrastructure services, external dependencies, and integration points that support project architecture implementation and scientific computing requirements.
 
 | **Service** | **Relationship Type** | **Integration Points** | **Documentation** |
 |-------------|----------------------|------------------------|-------------------|
-| **Infrastructure Platform** | **Implements** | Database systems, computational resources, network architecture | [Infrastructure Overview](../infrastructure/README.md) |
-| **Data Processing** | **Executes** | Pipeline workflows, analysis procedures, result generation | [Data Pipeline Design](data-pipeline-design.md) |
-| **Scientific Methodology** | **Enables** | Research workflows, validation procedures, analysis frameworks | [Scientific Methodology](scientific-methodology.md) |
-| **Implementation Roadmap** | **Guides** | Development phases, milestone delivery, project execution | [Implementation Roadmap](../ROADMAP.md) |
+| **Database Infrastructure** | **Core Component** | PostgreSQL 16, spatial indexing, performance optimization, backup integration | [Database Infrastructure](../infrastructure/database/README.md) |
+| **Data Processing Pipeline** | **Core Component** | FITS ingestion, ETL workflows, validation procedures, monitoring integration | [Data Pipeline Design](data-pipeline-design.md) |
+| **Virtual Machine Infrastructure** | **Foundation** | Compute resources, storage allocation, network connectivity, resource management | [Infrastructure Overview](../infrastructure/README.md) |
+| **Monitoring and Operations** | **Supporting** | Performance metrics, health monitoring, alerting integration, operational dashboards | [Monitoring Setup](../infrastructure/operations/monitoring-setup.md) |
+| **Developer Access Management** | **Supporting** | Collaborative access, data sharing, security controls, development workflows | [Developer Access Management](../infrastructure/operations/developer-access-management.md) |
 
 ## **2.2 Policy Implementation**
 
-This subsection connects project architecture to governance frameworks and design requirements supporting scientific research and system reliability.
+This subsection connects project architecture to governance frameworks and systematic requirements supporting astronomical research objectives and distributed computing best practices.
 
-Project architecture implementation directly supports several critical design objectives:
+Project architecture implementation directly supports several critical organizational and research objectives:
 
-- **System Design Policy** - Systematic architecture approach enabling scalable and maintainable scientific computing platforms
-- **Technology Strategy Policy** - Strategic technology selection supporting efficient scientific analysis and research validation
-- **Security Architecture Policy** - Comprehensive security design aligned with CIS Controls v8 and NIST frameworks
-- **Data Architecture Policy** - Systematic data management design enabling efficient processing and analysis workflows
-- **Integration Architecture Policy** - Systematic component integration supporting reliable scientific computing and collaboration
-
-**Compliance Framework**: Project architecture aligns with CIS Controls v8 and NIST frameworks through systematic security design integration. Ubuntu 24.04 servers are baselined to CIS v8 Level 2. Note: We are not security professionals and are working towards full compliance validation with established frameworks.
+- **Scalable Computing Policy** - Distributed architecture enabling systematic resource scaling and performance optimization for large astronomical datasets
+- **Collaborative Research Policy** - Systematic access management and development environment integration supporting multi-user scientific collaboration
+- **Data Management Policy** - Integrated backup strategies and data protection frameworks ensuring astronomical research data integrity and availability
+- **Operational Excellence Policy** - Comprehensive monitoring integration and systematic performance optimization supporting reliable scientific computing operations
 
 ## **2.3 Responsibility Matrix**
 
-This subsection establishes clear accountability for project architecture activities across project roles.
+This subsection establishes clear accountability for project architecture development, implementation, and maintenance activities across different organizational roles.
 
-| **Activity** | **System Architects** | **Technical Leads** | **Infrastructure Engineers** | **Scientific Researchers** |
-|--------------|----------------------|-------------------|------------------------------|----------------------------|
+| **Activity** | **System Architects** | **Infrastructure Engineers** | **Database Administrators** | **Scientific Developers** |
+|--------------|----------------------|------------------------------|----------------------------|---------------------------|
 | **Architecture Design** | **A** | **R** | **C** | **C** |
-| **Technology Selection** | **R** | **A** | **C** | **C** |
-| **Integration Planning** | **R** | **R** | **A** | **C** |
-| **System Validation** | **R** | **R** | **R** | **A** |
+| **Component Integration** | **R** | **A** | **R** | **C** |
+| **Performance Optimization** | **C** | **R** | **A** | **C** |
+| **Monitoring Implementation** | **R** | **A** | **C** | **I** |
+| **Scientific Workflow Integration** | **C** | **C** | **C** | **A** |
 
 *R: Responsible, A: Accountable, C: Consulted, I: Informed*
 
 # ⚙️ **3. Technical Implementation**
 
-This section provides comprehensive overview of project architecture design, system components, and integration approaches that support DESI cosmic void analysis requirements and scientific research objectives.
+This section provides comprehensive specifications for project architecture implementation, including system components, integration patterns, and technical decisions supporting DESI cosmic void analysis scientific computing requirements.
 
 ## **3.1 Architecture & Design**
 
-This subsection explains the system architecture and design decisions that enable efficient scientific computing and environmental analysis for DESI cosmic void research.
+This subsection explains the overall system architecture and design principles that enable distributed scientific computing for astronomical research workflows.
 
-The system architecture employs three-tier design with clear separation between data persistence (PostgreSQL database), application processing (Python scientific computing), and presentation (analysis results and visualization). The design features dedicated virtual machines for database operations and analysis workloads, comprehensive backup infrastructure, and systematic network configuration supporting high-performance scientific computing and collaboration workflows.
-
-**High-Level Architecture:**
+The project architecture employs distributed virtual machine topology with specialized compute roles, centralized database infrastructure for data management, and systematic monitoring integration supporting both high-performance data processing and collaborative development workflows. The design utilizes modular component architecture enabling independent scaling and optimization while maintaining systematic integration patterns essential for astronomical research requiring both computational performance and collaborative accessibility.
 
 ```mermaid
-graph TB
-    subgraph "Data Tier"
-        DB[(PostgreSQL 16<br/>proj-pg01<br/>8 vCPU, 48GB RAM)]
-        BACKUP[(Backup Server<br/>pbs01<br/>4TB Storage)]
+graph TD
+    A[DESI DR1 Archives] --> B[proj-dp01: Data Processing]
+    B --> C[proj-pg01: Database Server]
+    C --> D[Scientific Analysis Workflows]
+    
+    E[pbs01: Backup Server] --> C
+    F[Monitoring Stack] --> B
+    F --> C
+    F --> E
+    
+    G[Developer Access] --> B
+    G --> C
+    
+    subgraph "VM Infrastructure"
+        B
+        C
+        E
     end
     
-    subgraph "Application Tier"
-        ANALYSIS[Analysis Platform<br/>proj-dp01<br/>4 vCPU, 16GB RAM]
-        PYTHON[Python Scientific Stack<br/>AstroPy, Pandas, SciPy]
+    subgraph "External Services"
+        A
+        F
     end
     
-    subgraph "Data Sources"
-        DESIVAST[DESIVAST VAC<br/>1.2GB Void Catalogs]
-        FASTSPEC[FastSpecFit VAC<br/>26.4GB Galaxy Properties]
-    end
-    
-    subgraph "Outputs"
-        PUBLICATION[Scientific Publication<br/>Environmental Constraints]
-        VAC[Enhanced VAC<br/>Community Resource]
-    end
-    
-    DESIVAST --> DB
-    FASTSPEC --> DB
-    DB --> ANALYSIS
-    PYTHON --> ANALYSIS
-    ANALYSIS --> PUBLICATION
-    ANALYSIS --> VAC
-    DB --> BACKUP
-    
-    style DB fill:#e3f2fd
-    style ANALYSIS fill:#f3e5f5
-    style BACKUP fill:#e8f5e8
-    style PUBLICATION fill:#fce4ec
+    style B fill:#e1f5fe
+    style C fill:#f3e5f5
+    style E fill:#fff3e0
+    style D fill:#e8f5e8
 ```
 
-## **3.2 Structure and Organization**
+## **3.2 System Components**
 
-This subsection describes the architecture organization and key structural elements that support systematic scientific computing and environmental analysis workflows.
+This subsection describes the detailed specifications and roles of individual system components within the distributed architecture.
 
-**System Components:**
+### **Data Processing Infrastructure (proj-dp01)**
 
-| **Component** | **Description** | **Purpose** | **Documentation** |
-|---------------|-----------------|-------------|-------------------|
-| **Database Layer** | PostgreSQL 16 with astronomical data optimization | Systematic data storage and spatial query processing | [Database Infrastructure](../infrastructure/database/README.md) |
-| **Processing Layer** | Python scientific computing with dedicated analysis VM | Environmental classification and statistical analysis | [Source Code Overview](../src/README.md) |
-| **Infrastructure Layer** | Virtualized computing platform with backup integration | Reliable computational resources and data protection | [Infrastructure Overview](../infrastructure/README.md) |
-| **Integration Layer** | Network connectivity and data flow management | Efficient data access and processing coordination | [Network Configuration](../infrastructure/deployment/network-configuration.md) |
+**Virtual Machine Specifications**:
 
-**Data Flow Architecture:**
+- **VM ID**: 2001
+- **Resources**: 4 vCPU, 16GB RAM, 132GB total storage (32GB boot + 100GB data)
+- **Network**: 10.25.20.3, VLAN 20
+- **Host**: node01 (planned migration to node04 for production)
 
-1. **Ingestion Phase:** FITS catalog processing and PostgreSQL loading
-2. **Processing Phase:** Spatial cross-matching and environmental classification
-3. **Analysis Phase:** Statistical comparison and scientific validation
-4. **Output Phase:** Publication preparation and community data product generation
+**Component Roles and Responsibilities**:
 
-## **3.3 Integration and Procedures**
+```yaml
+proj_dp01_architecture:
+  primary_functions:
+    - "DESI DR1 data acquisition and validation"
+    - "FITS file processing and transformation"
+    - "ETL pipeline execution and monitoring"
+    - "Development environment and collaborative access"
+    
+  storage_organization:
+    boot_disk: "32GB NVMe (OS, applications, configurations)"
+    data_disk: "100GB NVMe (DESI datasets, processing workspace)"
+    total_data: "27.6GB DESI DR1 (1.2GB DESIVAST + 26.4GB FastSpecFit)"
+    
+  performance_characteristics:
+    download_throughput: "15.8-43.6 MB/s (DESI archive connectivity)"
+    processing_capacity: "6.4M galaxy records, 10,734 void catalog entries"
+    concurrent_users: "Multiple developers via group-based access control"
+    
+  integration_points:
+    database_connectivity: "High-bandwidth connection to proj-pg01"
+    monitoring_integration: "Performance metrics and health monitoring"
+    backup_coordination: "Data protection and disaster recovery"
+```
 
-This subsection provides systematic overview of architecture integration patterns and implementation approaches supporting scientific analysis and environmental research workflows.
+### **Database Infrastructure (proj-pg01)**
 
-Architecture integration follows systematic approach: modular component design enabling independent development and testing, standardized interfaces supporting efficient data flow between system layers, comprehensive monitoring and validation ensuring system reliability, and systematic backup and recovery procedures protecting scientific data and analysis results. The architecture enables efficient scaling from initial data ingestion through final publication while maintaining scientific accuracy and reproducibility requirements.
+**Virtual Machine Specifications**:
+
+- **VM ID**: 2002
+- **Resources**: 8 vCPU, 48GB RAM, 282GB total storage (32GB boot + 250GB data)
+- **Network**: 10.25.20.8, VLAN 20
+- **Host**: node01 (planned migration to node04 for production)
+
+**Database Configuration and Optimization**:
+
+```yaml
+proj_pg01_architecture:
+  postgresql_configuration:
+    version: "PostgreSQL 16"
+    data_directory: "/mnt/data/pg01 (NVMe-optimized)"
+    shared_buffers: "12GB (25% of system RAM)"
+    effective_cache_size: "36GB (75% of system RAM)"
+    work_mem: "256MB (optimized for complex queries)"
+    maintenance_work_mem: "2GB (ETL and indexing operations)"
+    
+  performance_optimization:
+    random_page_cost: "1.1 (NVMe storage optimization)"
+    parallel_workers: "8 (matches CPU core count)"
+    checkpoint_timeout: "15min (write performance optimization)"
+    wal_buffers: "-1 (automatic sizing)"
+    
+  database_organization:
+    schemas:
+      raw_catalogs: "DESIVAST voids, FastSpecFit galaxies"
+      science_analysis: "Processed datasets, cross-matched catalogs"
+    indexing_strategy: "Spatial indices, mass-based queries, TARGETID optimization"
+    
+  role_management:
+    postgres: "Superuser and database administration"
+    postgres_exporter: "Monitoring integration with pg_monitor role"
+    clusteradmin_pg01: "Scientific analysis and data manipulation"
+    iperius_backup_pg01: "Backup operations and data protection"
+```
+
+### **Backup Infrastructure (pbs01)**
+
+**External Backup Server Specifications**:
+
+- **Host**: pbs01.radioastronomy.io (10.16.207.218)
+- **Hardware**: Intel Twin Lake N150, 16GB DDR4, 512GB boot SSD, 4TB Samsung 990 Pro backup
+- **Software**: Proxmox Backup Server
+
+**Backup Architecture Integration**:
+
+```yaml
+backup_infrastructure:
+  backup_strategy:
+    schedule: "Daily backups with 7 daily + 4 weekly + 1 monthly retention"
+    targets: "Complete VM images (proj-dp01, proj-pg01) and database exports"
+    archive_integration: "Amazon S3 Glacier Infrequent Access for long-term retention"
+    
+  data_protection:
+    vm_backup: "Full VM snapshots including OS, applications, and data"
+    database_backup: "PostgreSQL logical and physical backup procedures"
+    differential_backup: "Incremental backup optimization for large datasets"
+    
+  recovery_capabilities:
+    rto_target: "4 hours (complete VM restoration)"
+    rpo_target: "24 hours (daily backup frequency)"
+    testing_procedures: "Monthly recovery validation and disaster recovery testing"
+```
+
+## **3.3 Integration Patterns**
+
+This subsection describes systematic integration approaches and communication patterns between architecture components.
+
+### **Data Flow Architecture**
+
+**Primary Data Processing Workflow**:
+
+1. **Data Acquisition** (proj-dp01): DESI DR1 archive download, FITS validation, metadata extraction
+2. **ETL Processing** (proj-dp01 → proj-pg01): Transformation pipelines, database loading, spatial indexing
+3. **Scientific Analysis** (proj-pg01): Complex queries, spatial correlation analysis, statistical processing
+4. **Result Generation** (proj-pg01 → proj-dp01): Analysis output, visualization preparation, result validation
+
+**Integration Communication Patterns**:
+
+```yaml
+component_integration:
+  database_connectivity:
+    protocol: "PostgreSQL native protocol over TCP/IP"
+    security: "Role-based authentication, connection pooling"
+    performance: "High-bandwidth VM-to-VM connectivity within VLAN 20"
+    
+  monitoring_integration:
+    metrics_collection: "PostgreSQL exporter, system performance monitoring"
+    alerting: "Health check validation, performance threshold monitoring"
+    logging: "Centralized log aggregation and analysis"
+    
+  backup_coordination:
+    vm_backup: "Proxmox Backup Server integration with scheduled snapshots"
+    database_backup: "PostgreSQL streaming replication and logical backup exports"
+    recovery_testing: "Systematic validation of backup integrity and restoration procedures"
+```
+
+### **Development Environment Integration**
+
+**Collaborative Access Framework**:
+
+```yaml
+development_integration:
+  access_management:
+    user_groups: "developers group with systematic permission management"
+    data_sharing: "Group-writable directories with sticky bit configuration (g+s)"
+    file_permissions: "770 permissions enabling collaborative data access"
+    
+  workflow_integration:
+    code_development: "Shared development environment on proj-dp01"
+    data_processing: "Collaborative FITS processing and validation procedures"
+    analysis_execution: "Shared database access for scientific computing workflows"
+    
+  resource_allocation:
+    processing_resources: "proj-dp01 optimized for ETL and data transformation"
+    database_resources: "proj-pg01 optimized for complex analytical queries"
+    storage_resources: "Distributed storage with backup protection and recovery capabilities"
+```
 
 # 🛠️ **4. Management & Operations**
 
-This section covers architecture management approaches and operational procedures for maintaining system design effectiveness and supporting ongoing scientific research requirements.
+This section covers operational procedures for project architecture management including deployment strategies, performance monitoring, and systematic maintenance approaches supporting astronomical research workflows.
 
 ## **4.1 Lifecycle Management**
 
-This subsection documents management approaches throughout the architecture operational lifecycle and system evolution requirements.
+This subsection documents management approaches throughout the project architecture operational lifecycle from initial deployment through production scaling and maintenance.
 
-Architecture lifecycle management encompasses design validation and implementation planning, systematic component deployment and integration testing, performance monitoring and optimization procedures, capacity planning and scaling assessment, and systematic maintenance ensuring continued architecture effectiveness throughout project lifecycle and scientific research evolution.
+Project architecture lifecycle management encompasses systematic VM deployment and configuration procedures, database optimization and scaling strategies, monitoring system integration and performance tuning, and comprehensive backup validation and disaster recovery testing ensuring reliable scientific computing infrastructure supporting collaborative astronomical research workflows.
 
 ## **4.2 Monitoring & Quality Assurance**
 
-This subsection defines monitoring strategies and quality approaches for architecture effectiveness and system performance validation.
+This subsection defines monitoring strategies and quality approaches for distributed system architecture and scientific computing infrastructure.
 
-Architecture monitoring includes system performance tracking across all components, integration validation ensuring efficient data flow, security compliance verification, and systematic quality assessment ensuring architecture effectiveness for scientific computing requirements and environmental research objectives.
+### **System Performance Monitoring**
+
+**Infrastructure Metrics Framework**:
+
+```yaml
+monitoring_architecture:
+  vm_performance:
+    cpu_utilization: "proj-dp01: 0.22%, proj-pg01: 0.19% (baseline)"
+    memory_usage: "proj-dp01: 3.14% (514MB/16GB), proj-pg01: 1.30% (639MB/48GB)"
+    storage_performance: "NVMe optimization validation and I/O monitoring"
+    
+  database_performance:
+    connection_monitoring: "Active connections, session management, query performance"
+    query_optimization: "Slow query logging, execution plan analysis"
+    spatial_indexing: "Coordinate-based query performance validation"
+    
+  application_performance:
+    etl_throughput: "Data processing pipeline performance and bottleneck identification"
+    backup_performance: "Backup completion times and restoration validation"
+    scientific_workflow: "Analysis execution monitoring and resource utilization tracking"
+```
+
+**PostgreSQL Monitoring Integration**:
+
+```yaml
+database_monitoring:
+  postgres_exporter:
+    deployment: "Docker container on proj-pg01"
+    metrics_endpoint: "http://proj-pg01:9187/metrics"
+    collection_scope: "Database metrics, connection stats, query performance"
+    
+  key_metrics:
+    database_size: "6 databases ranging from 7.5MB to 7.7MB"
+    connection_utilization: "Active connections monitoring and threshold alerting"
+    query_performance: "Statement execution timing and optimization tracking"
+    backup_validation: "Backup completion verification and integrity validation"
+```
 
 ## **4.3 Maintenance and Optimization**
 
-This subsection outlines systematic maintenance and optimization approaches for architecture evolution and performance enhancement.
+This subsection outlines systematic maintenance and optimization approaches for distributed architecture components and scientific computing infrastructure.
 
-Architecture maintenance encompasses systematic component optimization, integration efficiency improvement, scalability assessment and enhancement, security update integration, and systematic evolution planning based on scientific research requirements and computational performance optimization.
+Architecture maintenance encompasses systematic VM resource optimization based on utilization patterns, database performance tuning and index maintenance, backup system validation and recovery testing, and comprehensive monitoring system updates ensuring continued reliability and performance optimization for astronomical research computing requirements.
 
-# 🔒 **5. Security & Compliance**
+# 📚 **6. References & Related Resources**
 
-This section documents security architecture and compliance alignment for project design within the DESI cosmic void analysis project.
+This section provides comprehensive links to related documentation and supporting resources for project architecture implementation and distributed scientific computing infrastructure.
 
-## **5.1 Security Controls**
-
-This subsection documents specific security architecture measures and verification methods for system design and implementation.
-
-Security architecture implementation includes systematic security design across all system components, network security configuration, database access control implementation, and comprehensive security monitoring aligned with CIS Controls v8 baseline requirements. Security architecture ensures consistent protection across data, processing, and infrastructure layers while enabling efficient scientific collaboration and research validation.
-
-**Compliance Disclaimer**: We are not security professionals - this represents our baseline security implementation and we are working towards full compliance with established frameworks.
-
-## **5.2 CIS Controls Mapping**
-
-This subsection provides explicit mapping to CIS Controls v8, documenting compliance status and implementation evidence for architecture design.
-
-| **CIS Control** | **Implementation Status** | **Evidence Location** | **Assessment Date** |
-|-----------------|--------------------------|----------------------|-------------------|
-| **CIS.1.1** | **Compliant** | Ubuntu 24.04 CIS v8 L2 baseline across architecture | **2025-07-01** |
-| **CIS.2.1** | **Planned** | System inventory and asset management architecture | **TBD** |
-| **CIS.12.1** | **Planned** | Network architecture security validation | **TBD** |
-
-**Reference**: [CIS Ubuntu 24.04 Implementation](https://github.com/Pxomox-Astronomy-Lab/proxmox-astronomy-lab/tree/main/docs/Compliance-Security/CIS-Implementation-Guides/Linux/Ubuntu-24-04-Server)
-
-## **5.3 Framework Compliance**
-
-This subsection demonstrates how architecture security design satisfies requirements across multiple compliance frameworks.
-
-Architecture security design aligns with CIS Controls v8 baseline, NIST RMF for AI framework, ISO 27001 information security management, and NIST cybersecurity framework through systematic implementation of security architecture, access controls, and monitoring procedures appropriate for scientific computing environments and environmental research collaboration.
-
-# 💾 **6. Backup & Recovery**
-
-This section documents architecture-wide backup strategy and recovery procedures for system design and data protection.
-
-## **6.1 Protection Strategy**
-
-This subsection details comprehensive backup approaches and data protection strategies for architecture components and scientific data.
-
-Architecture backup strategy encompasses systematic protection of all system components through Proxmox Backup Server integration, database backup with point-in-time recovery capability, configuration backup for rapid system restoration, and systematic archival to Amazon S3 Glacier ensuring long-term data protection and architecture recoverability.
-
-| **Architecture Component** | **Backup Strategy** | **Recovery Objective** | **Validation Frequency** |
-|----------------------------|-------------------|----------------------|-------------------------|
-| **Database Systems** | **Daily automated backup with retention** | **RTO: 4 hours, RPO: 24 hours** | **Weekly** |
-| **Analysis Environment** | **Configuration and data backup** | **RTO: 2 hours, RPO: 1 week** | **Monthly** |
-| **System Configuration** | **Infrastructure backup** | **RTO: 1 hour, RPO: 1 month** | **Quarterly** |
-
-## **6.2 Recovery Procedures**
-
-This subsection provides comprehensive recovery processes for architecture components and system restoration procedures.
-
-Architecture recovery procedures include systematic component restoration with validation testing, data recovery with integrity verification, configuration restoration with functionality validation, and comprehensive system testing ensuring complete architecture functionality and scientific analysis capability following recovery operations.
-
-# 📚 **7. References & Related Resources**
-
-This section provides comprehensive links to related documentation and supporting resources for project architecture implementation and system design.
-
-## **7.1 Internal References**
+## **6.1 Internal References**
 
 | **Document Type** | **Document Title** | **Relationship** | **Link** |
 |-------------------|-------------------|------------------|----------|
-| **Project** | Project Overview | Overall project context and architecture requirements | [../README.md](../README.md) |
-| **Implementation** | Implementation Roadmap | Detailed implementation planning and milestone delivery | [../ROADMAP.md](../ROADMAP.md) |
-| **Infrastructure** | Infrastructure Overview | System implementation and component deployment | [../infrastructure/README.md](../infrastructure/README.md) |
-| **Data Pipeline** | Data Pipeline Design | Scientific workflow and processing architecture | [data-pipeline-design.md](data-pipeline-design.md) |
+| **Data Pipeline** | Data Pipeline Design | Core data processing architecture and ETL workflows | [data-pipeline-design.md](data-pipeline-design.md) |
+| **Infrastructure** | Infrastructure Overview | Foundation infrastructure and VM specifications | [../infrastructure/README.md](../infrastructure/README.md) |
+| **Database** | Database Infrastructure | Database architecture and performance optimization | [../infrastructure/database/README.md](../infrastructure/database/README.md) |
+| **Implementation** | PostgreSQL Implementation | Database deployment and configuration details | [../infrastructure/database/postgresql-implementation.md](../infrastructure/database/postgresql-implementation.md) |
+| **Operations** | Developer Access Management | Collaborative access and development environment | [../infrastructure/operations/developer-access-management.md](../infrastructure/operations/developer-access-management.md) |
+| **Monitoring** | Monitoring Setup | Monitoring architecture and operational procedures | [../infrastructure/operations/monitoring-setup.md](../infrastructure/operations/monitoring-setup.md) |
 
-## **7.2 External Standards**
+## **6.2 External Standards**
 
-- **[TOGAF Architecture Framework](https://www.opengroup.org/togaf)** - Enterprise architecture methodology and best practices
-- **[PostgreSQL Architecture Documentation](https://www.postgresql.org/docs/current/overview.html)** - Database architecture design and optimization principles
-- **[Python Software Architecture](https://docs.python.org/3/tutorial/)** - Application architecture patterns and scientific computing frameworks
-- **[CIS Controls v8](https://www.cisecurity.org/controls/)** - Security architecture framework and implementation guidelines
+- **[DESI Collaboration Infrastructure](https://desi.lbl.gov/)** - Official DESI project infrastructure and computing requirements
+- **[PostgreSQL High Availability](https://www.postgresql.org/docs/current/high-availability.html)** - Database clustering and availability best practices
+- **[Proxmox VE Documentation](https://pve.proxmox.com/pve-docs/)** - Virtualization platform administration and optimization
+- **[Scientific Computing Architecture Patterns](https://www.nersc.gov/users/computational-systems/)** - High-performance computing architecture for scientific applications
+- **[Astronomical Data Processing Best Practices](https://www.astropy.org/)** - Standards for astronomical software development and data processing
 
-# ✅ **8. Approval & Review**
+# ✅ **7. Approval & Review**
 
-This section documents the formal review and approval process for project architecture documentation.
+This section documents the formal review and approval process for project architecture design and implementation procedures.
 
-## **8.1 Review Process**
+## **7.1 Review Process**
 
-Project architecture documentation review follows systematic validation of design effectiveness, technical accuracy, and strategic alignment to ensure comprehensive architecture support for scientific computing and environmental research requirements.
+Project architecture documentation review follows systematic validation of distributed system design, component integration effectiveness, and alignment with astronomical research computing requirements to ensure scalable and maintainable scientific computing infrastructure.
 
-## **8.2 Approval Matrix**
+## **7.2 Approval Matrix**
 
 | **Reviewer** | **Role/Expertise** | **Review Date** | **Approval Status** | **Comments** |
 |-------------|-------------------|----------------|-------------------|--------------|
-| [System Architect] | Architecture design and system integration | 2025-07-01 | **Approved** | Architecture provides comprehensive framework for scientific computing |
-| [Technical Lead] | Technology strategy and implementation planning | 2025-07-01 | **Approved** | Architecture design supports efficient scientific analysis workflows |
-| [Infrastructure Engineer] | System implementation and operational procedures | 2025-07-01 | **Approved** | Architecture enables reliable infrastructure deployment and management |
+| [System Architect] | Distributed systems architecture and scientific computing | 2025-07-02 | **Approved** | Architecture provides comprehensive framework for DESI data processing at scale |
+| [Infrastructure Engineer] | VM deployment and resource optimization strategies | 2025-07-02 | **Approved** | Component integration supports efficient scientific computing workflows |
+| [Database Administrator] | Database architecture and performance optimization | 2025-07-02 | **Approved** | Database integration enables systematic astronomical data analysis |
+| [Scientific Developer] | Research workflow integration and collaborative development | 2025-07-02 | **Approved** | Architecture supports collaborative astronomical research requirements |
 
-# 📜 **9. Documentation Metadata**
+# 📜 **8. Documentation Metadata**
 
-This section provides comprehensive information about project architecture documentation creation and maintenance.
+This section provides comprehensive information about project architecture documentation creation and maintenance within the DESI cosmic void analysis scientific computing environment.
 
-## **9.1 Change Log**
+## **8.1 Change Log**
 
 | **Version** | **Date** | **Changes** | **Author** | **Review Status** |
 |------------|---------|-------------|------------|------------------|
-| 1.0 | 2025-07-01 | Initial project architecture with comprehensive system design framework | VintageDon | **Approved** |
+| 1.0 | 2025-07-02 | Initial project architecture with distributed VM topology and integration specifications | VintageDon | **Approved** |
 
-## **9.2 Authorization & Review**
+## **8.2 Authorization & Review**
 
-Project architecture documentation reflects comprehensive system design validated through expert review and architectural consultation for DESI cosmic void analysis requirements and scientific research objectives.
+Project architecture documentation reflects comprehensive distributed system design validated through infrastructure implementation analysis and scientific computing requirements assessment for DESI cosmic void analysis research.
 
-## **9.3 Authorship Details**
+## **8.3 Authorship Details**
 
 **Human Author:** VintageDon (Project Lead and Architect)  
 **AI Contributor:** Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)  
 **Collaboration Method:** Request-Analyze-Verify-Generate-Validate (RAVGV)  
-**Human Oversight:** Complete project architecture review and validation of system design accuracy
+**Human Oversight:** Complete project architecture review and validation of distributed system design and component integration accuracy
 
-## **9.4 AI Collaboration Disclosure**
+## **8.4 AI Collaboration Disclosure**
 
-This document was collaboratively developed to establish comprehensive project architecture that enables systematic system design and effective scientific computing for DESI cosmic void research.
+This document was collaboratively developed to establish comprehensive project architecture that enables systematic integration of distributed computing infrastructure for DESI cosmic void environmental quenching analysis.
 
 ---
 
 **🤖 AI Collaboration Disclosure**
 
-This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The project architecture documentation reflects systematic system design development informed by enterprise architecture best practices and scientific computing requirements. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for architectural accuracy and system design effectiveness.
+This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The project architecture reflects systematic distributed system design development informed by scientific computing best practices, astronomical research requirements, and DESI data processing infrastructure needs. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for architectural accuracy and system design effectiveness.
 
-*Generated: 2025-07-01 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*
+*Generated: 2025-07-02 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*

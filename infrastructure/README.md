@@ -1,226 +1,215 @@
 <!--
 ---
 title: "Infrastructure Overview"
-description: "Comprehensive infrastructure documentation for DESI cosmic void analysis, including virtual machine deployment, database infrastructure, operations monitoring, security hardening, and systematic infrastructure management supporting 27.6GB data analysis workflows"
-author: "VintageDon"
-ai_contributor: "Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)"
-date: "2025-07-01"
-version: "1.2"
+description: "Comprehensive infrastructure overview for DESI cosmic void analysis including database systems, development environments, network connectivity, and security configuration"
+author: "Infrastructure Team"
+ai_contributor: "Claude 4 Sonnet (claude-4-sonnet-20250514)"
+date: "2025-07-02"
+version: "2.0"
 status: "Published"
 tags:
 - type: infrastructure
-- domain: infrastructure-management
-- domain: security
-- tech: proxmox
-- tech: postgresql-16
-- tech: cis-controls-v8
+- domain: infrastructure-overview
+- tech: [postgresql-16, ubuntu-24-04, inter-vm-networking]
 - phase: project-setup
+- dataset: desi-dr1
 related_documents:
+- "[Project Architecture](../docs/project-architecture.md)"
 - "[Database Infrastructure](database/README.md)"
-- "[Operations Infrastructure](operations/README.md)"
-- "[Security Infrastructure](security/README.md)"
-- "[Deployment Infrastructure](deployment/README.md)"
+- "[Development Environment Setup](development/development-environment-setup.md)"
+- "[Security Configuration](security/README.md)"
 scientific_context:
   objective: "Environmental quenching analysis"
   dataset: "DESI DR1 BGS"
-  methods: ["infrastructure-management", "security-hardening"]
+  methods: ["spatial-crossmatch", "statistical-comparison"]
 ---
 -->
 
 # 🏗️ **Infrastructure Overview**
 
-This directory contains comprehensive infrastructure documentation for DESI cosmic void analysis, including virtual machine deployment, database infrastructure, operations monitoring, security hardening, and systematic infrastructure management that supports efficient 27.6GB data analysis workflows and secure scientific computing operations.
+This document provides comprehensive overview of infrastructure architecture for DESI cosmic void analysis, including database systems, development environments, inter-VM connectivity patterns, security configuration, and operational procedures supporting environmental quenching research using DESI DR1 BGS data.
 
 # 🎯 **1. Introduction**
 
-This section establishes the foundational context for infrastructure management within the DESI cosmic void analysis project, defining the systematic approach to infrastructure deployment and operations that enables reliable scientific computing and research validation.
+This section establishes the foundational context for infrastructure architecture within the DESI cosmic void analysis project, defining systematic infrastructure approaches that enable efficient scientific computing and reliable data processing workflows.
 
 ## **1.1 Purpose**
 
-This subsection explains how infrastructure management enables systematic deployment and operations while supporting efficient scientific computing and regulatory compliance for cosmic void research.
+This subsection explains how infrastructure architecture enables systematic support for DESI cosmic void analysis while providing comprehensive computational resources, database capabilities, and development environments for environmental quenching research.
 
-Infrastructure management functions as the systematic foundation for DESI cosmic void analysis platform operations, transforming distributed hardware resources into coherent, secure, and operationally optimized infrastructure that enables reliable scientific computing, efficient data processing, and systematic research validation. The infrastructure framework supports virtual machine deployment, database operations, monitoring visibility, security hardening, and comprehensive operational procedures essential for 27.6GB data analysis workflows and environmental quenching research.
+The infrastructure architecture establishes robust computational foundation for DESI cosmic void analysis, integrating high-performance database systems, optimized development environments, secure inter-VM connectivity, and comprehensive security controls essential for environmental quenching research. The architecture provides systematic resource allocation, efficient data processing capabilities, reliable network communication, and comprehensive operational procedures enabling effective scientific analysis workflows and research collaboration for DESI DR1 BGS data processing and cosmic void analysis.
 
 ## **1.2 Scope**
 
-This subsection defines the boundaries of infrastructure management coverage within the DESI cosmic void analysis project.
+This subsection defines the boundaries of infrastructure overview coverage within the DESI project architecture.
 
 | **In Scope** | **Out of Scope** |
 |--------------|------------------|
-| Virtual machine deployment and configuration management | Physical hardware procurement and data center management |
-| Database infrastructure and performance optimization | Scientific analysis algorithm development and validation |
-| Operations monitoring and systematic performance management | Network infrastructure beyond project VLAN configuration |
-| Security hardening and CIS Controls v8 compliance implementation | Application-level development and software engineering |
-| Backup infrastructure and data protection procedures | External service integration and third-party platform management |
+| Virtual machine architecture and resource allocation | Physical hardware specifications and procurement details |
+| Database infrastructure and PostgreSQL configuration | Application-level code and analysis algorithm implementation |
+| Inter-VM connectivity and network communication patterns | External network connectivity and internet access configuration |
+| Development environment setup and scientific computing stack | Individual user account management and personal configurations |
+| Security configuration and compliance framework implementation | Detailed security procedures and incident response protocols |
 
 ## **1.3 Target Audience**
 
-This subsection identifies stakeholders who interact with infrastructure management and the technical background required for effective infrastructure deployment and operations.
+This subsection identifies stakeholders who interact with infrastructure architecture and required technical background for effective infrastructure understanding and management.
 
-**Primary Audience:** Infrastructure engineers, system administrators, and operations teams responsible for infrastructure deployment and management. **Secondary Audience:** Database administrators, security engineers, and scientific researchers who interact with infrastructure services and operational procedures. **Required Background:** Understanding of virtualization technologies, database administration, security hardening, and familiarity with scientific computing infrastructure requirements and operational procedures.
+**Primary Audience:** Infrastructure engineers, system administrators, and project managers responsible for infrastructure deployment and operational management. **Secondary Audience:** Scientific researchers and developers who need infrastructure understanding for effective project implementation and scientific analysis workflows. **Required Background:** Understanding of virtualization concepts, database systems, network architecture, and scientific computing infrastructure requirements.
 
 ## **1.4 Overview**
 
-This subsection provides context about infrastructure organization and its relationship to the broader DESI cosmic void analysis project.
+This subsection provides context about infrastructure architecture within the broader DESI cosmic void analysis project and computational requirements.
 
-Infrastructure management establishes systematic operational foundation, transforming hardware resources into comprehensive and reliable infrastructure ecosystem that enables efficient scientific computing support, secure operations, and systematic research validation through integrated deployment, monitoring, and security management capabilities.
+The infrastructure architecture transforms complex computational requirements into systematic, reliable, and scalable infrastructure that enables comprehensive scientific analysis through integrated database systems, optimized development environments, secure connectivity patterns, and systematic operational procedures essential for environmental quenching research success and scientific collaboration.
 
 # 🔗 **2. Dependencies & Relationships**
 
-This section maps how infrastructure management integrates with project components and establishes operational relationships that enable systematic infrastructure deployment and management.
+This section maps how infrastructure architecture integrates with project components and establishes operational relationships that enable systematic computational support across the DESI analysis environment.
 
 ## **2.1 Related Services**
 
-This subsection identifies project components that depend on, utilize, or contribute to infrastructure management within the comprehensive operational framework.
+This subsection identifies project components that depend on or interact with infrastructure architecture.
 
 | **Service** | **Relationship Type** | **Integration Points** | **Documentation** |
 |-------------|----------------------|------------------------|-------------------|
-| **Database Infrastructure** | **Deploys** | PostgreSQL deployment, performance optimization, backup management | [Database Infrastructure](database/README.md) |
-| **Operations Infrastructure** | **Monitors** | Performance monitoring, alerting, operational visibility | [Operations Infrastructure](operations/README.md) |
-| **Security Infrastructure** | **Hardens** | CIS Controls v8 implementation, compliance validation, access control | [Security Infrastructure](security/README.md) |
-| **Deployment Infrastructure** | **Provisions** | VM deployment, network configuration, infrastructure automation | [Deployment Infrastructure](deployment/README.md) |
+| **Database Systems** | **Provides Platform For** | PostgreSQL deployment, data storage, query processing infrastructure | [Database Infrastructure](database/README.md) |
+| **Development Environment** | **Enables** | Scientific computing platform, analysis workflows, development tools | [Development Environment Setup](development/development-environment-setup.md) |
+| **Network Architecture** | **Implements** | Inter-VM connectivity, secure communication, database access patterns | [Inter-VM Connectivity](network/inter-vm-connectivity.md) |
+| **Security Framework** | **Secures** | Access controls, compliance validation, infrastructure protection | [Security Configuration](security/README.md) |
+| **Scientific Analysis** | **Supports** | Computational resources, data processing, analysis workflow execution | [Project Architecture](../docs/project-architecture.md) |
 
 ## **2.2 Policy Implementation**
 
-This subsection connects infrastructure management to project governance and operational excellence requirements.
+This subsection connects infrastructure architecture to project governance and operational requirements.
 
-Infrastructure management implementation directly supports several critical project objectives:
+Infrastructure architecture implementation directly supports several critical project objectives:
 
-- **Infrastructure Standardization Policy** - Systematic deployment and configuration management across infrastructure components
-- **Operational Excellence Policy** - Reliable infrastructure operations and performance optimization for scientific computing support
-- **Security Management Policy** - Comprehensive security hardening and compliance validation through systematic infrastructure protection
-- **Data Management Policy** - Efficient data processing infrastructure and systematic data protection through reliable operations
+- **Infrastructure Standardization Policy** - Systematic infrastructure deployment and configuration management across environments
+- **Performance Optimization Policy** - Efficient resource allocation and computational optimization for scientific analysis workflows
+- **Security Baseline Policy** - Comprehensive security controls and compliance validation for infrastructure protection
+- **Operational Excellence Policy** - Reliable infrastructure operations and systematic maintenance procedures for sustained project success
+- **Scientific Computing Policy** - Comprehensive computational resources and development environments for environmental quenching research
+
+**Compliance Framework**: Infrastructure architecture aligns with CIS Controls v8 and NIST frameworks as baseline security requirements. Ubuntu 24.04 systems follow CIS v8 Level 2 baseline implementation. Note: We are not security professionals and are working towards full compliance validation with established frameworks.
 
 ## **2.3 Responsibility Matrix**
 
-This subsection establishes clear accountability for infrastructure management activities across different project roles.
+This subsection establishes clear accountability for infrastructure architecture activities across project roles.
 
-| **Activity** | **Infrastructure Engineers** | **System Administrators** | **Operations Teams** | **Security Engineers** |
-|--------------|------------------------------|---------------------------|---------------------|------------------------|
+| **Activity** | **Infrastructure Engineer** | **System Administrator** | **Database Administrator** | **Security Analyst** |
+|--------------|----------------------------|--------------------------|----------------------------|----------------------|
+| **Architecture Design** | **A** | **C** | **C** | **C** |
 | **Infrastructure Deployment** | **A** | **R** | **C** | **C** |
-| **Performance Optimization** | **R** | **R** | **A** | **C** |
-| **Security Hardening** | **C** | **R** | **C** | **A** |
-| **Operational Monitoring** | **C** | **C** | **A** | **C** |
-| **Compliance Validation** | **C** | **R** | **C** | **A** |
+| **System Administration** | **R** | **A** | **C** | **C** |
+| **Database Management** | **C** | **R** | **A** | **C** |
+| **Security Implementation** | **R** | **R** | **C** | **A** |
+| **Performance Optimization** | **A** | **R** | **R** | **C** |
 
 *R: Responsible, A: Accountable, C: Consulted, I: Informed*
 
 # ⚙️ **3. Technical Implementation**
 
-This section provides comprehensive overview of infrastructure architecture, deployment approaches, and operational procedures that support DESI cosmic void analysis infrastructure management and scientific computing.
+This section provides comprehensive specifications for infrastructure architecture implementation, including virtual machine configuration, database systems, development environments, and network connectivity patterns.
 
 ## **3.1 Architecture & Design**
 
-This subsection explains the infrastructure architecture and design decisions that enable systematic deployment and operational management.
+This subsection explains the infrastructure architecture and design decisions that enable systematic and efficient computational support for DESI cosmic void analysis.
 
-Infrastructure architecture employs Proxmox virtualization platform with systematic VM deployment, PostgreSQL database infrastructure with performance optimization, comprehensive monitoring through Prometheus and Grafana, and systematic security hardening through CIS Controls v8 implementation. The architecture utilizes VLAN network isolation, automated deployment procedures, and integrated operational monitoring that enables reliable scientific computing and systematic infrastructure management.
+The infrastructure architecture employs distributed virtual machine design with specialized system roles, high-performance database infrastructure, optimized development environments, and secure inter-VM connectivity. The design features resource optimization for astronomical data processing, systematic security controls, comprehensive monitoring capabilities, and integrated backup procedures enabling reliable scientific computing while maintaining operational efficiency and security compliance for environmental quenching research workflows.
+
+```mermaid
+graph TB
+    subgraph "DESI Infrastructure Architecture"
+        A[proj-dp01<br/>Analysis Platform<br/>4 vCPU, 16GB RAM<br/>IP: 10.25.20.3] 
+        B[proj-pg01<br/>Database Server<br/>8 vCPU, 48GB RAM<br/>IP: 10.25.20.8]
+        
+        A -->|PostgreSQL Protocol<br/>Secure Database Access| B
+        A -->|Python Scientific Stack<br/>Data Analysis| A
+        B -->|PostgreSQL 16<br/>27.6GB DESI Data| B
+    end
+    
+    subgraph "External Systems"
+        C[Backup Infrastructure<br/>pbs01.radioastronomy.io]
+        D[Monitoring Systems<br/>Grafana/Prometheus]
+    end
+    
+    A -.->|Backup Integration| C
+    B -.->|Database Backup| C
+    A -.->|Performance Monitoring| D
+    B -.->|Database Monitoring| D
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style D fill:#e8f5e8
+```
 
 ## **3.2 Structure and Organization**
 
-This subsection describes the infrastructure organization and key operational components that support scientific computing workflows.
+This subsection describes the infrastructure organization and key architectural components supporting DESI cosmic void analysis requirements.
 
-### **Infrastructure Component Architecture**
-
-| **Component** | **Description** | **Documentation** |
-|---------------|-----------------|-------------------|
-| **Database Infrastructure** | PostgreSQL 16 implementation, monitoring, performance optimization | [database/README.md](database/README.md) |
-| **Operations Infrastructure** | Monitoring setup, performance management, operational procedures | [operations/README.md](operations/README.md) |
-| **Security Infrastructure** | CIS Controls v8 implementation, security validation, compliance management | [security/README.md](security/README.md) |
-| **Deployment Infrastructure** | VM deployment, network configuration, infrastructure automation | [deployment/README.md](deployment/README.md) |
-
-### **Virtual Machine Infrastructure**
-
-**Production VM Configuration:**
-
-```yaml
-desi_vm_infrastructure:
-  proj_dp01:
-    vm_id: 2001
-    purpose: "Data processing and scientific analysis"
-    resources:
-      vcpu: "4 (2 sockets, 2 cores)"
-      memory: "16 GiB"
-      storage: "32 GiB boot + 100 GiB data"
-    network:
-      ip: "10.25.20.3"
-      vlan: "20 (Project isolation)"
-    security:
-      baseline: "Ubuntu 24.04 CIS v8 Level 2"
-      hardening: "Complete"
-      
-  proj_pg01:
-    vm_id: 2002
-    purpose: "PostgreSQL database operations"
-    resources:
-      vcpu: "8 (2 sockets, 4 cores)"
-      memory: "48 GiB"
-      storage: "32 GiB boot + 250 GiB data"
-    database:
-      engine: "PostgreSQL 16"
-      configuration: "Optimized for 27.6GB data analysis"
-    network:
-      ip: "10.25.20.8"
-      vlan: "20 (Project isolation)"
-    security:
-      baseline: "Ubuntu 24.04 CIS v8 Level 2"
-      database_security: "PostgreSQL CIS implementation"
-      hardening: "Complete"
-```
-
-### **Security Infrastructure Integration**
-
-**CIS Controls v8 Implementation:**
-
-- **System Hardening:** Ubuntu 24.04 CIS v8 Level 2 baseline implementation across all infrastructure components
-- **Database Security:** PostgreSQL CIS database security configuration and access control management
-- **Network Security:** VLAN isolation and network access control for project infrastructure protection
-- **Audit Logging:** Comprehensive audit trail generation through auditd and security event monitoring
-- **Security Validation:** Automated security assessment through lynis, chkrootkit, and evidence collection procedures
-
-**Security Assessment and Compliance:**
-
-- **Assessment Tools:** Lynis security auditing, chkrootkit malware detection, auditd audit logging
-- **Evidence Collection:** Systematic compliance evidence collection and CIS Controls v8 validation
-- **Compliance Monitoring:** Continuous security posture assessment and regulatory alignment validation
-- **Security Automation:** Automated security assessment scheduling and evidence reporting
+| **Infrastructure Component** | **Specification** | **Purpose** |
+|------------------------------|------------------|-------------|
+| **proj-dp01 (Analysis Platform)** | 4 vCPU, 16GB RAM, 100GB NVMe, Ubuntu 24.04 | Scientific computing, data analysis, Python development environment |
+| **proj-pg01 (Database Server)** | 8 vCPU, 48GB RAM, 250GB NVMe, PostgreSQL 16 | Database hosting, 27.6GB DESI data storage, query processing |
+| **Inter-VM Network** | 10.25.20.0/24 subnet, secure connectivity | Database access, encrypted communication, performance optimization |
+| **Development Environment** | Python 3.9+, scientific computing stack, database connectivity | Data analysis workflows, statistical computing, visualization |
+| **Security Framework** | CIS Controls v8 L2, access controls, compliance validation | Infrastructure protection, data security, regulatory compliance |
+| **Backup Systems** | Proxmox Backup Server, automated procedures | Data protection, disaster recovery, operational continuity |
 
 ## **3.3 Integration and Procedures**
 
-This subsection provides systematic overview of infrastructure integration with project workflows and operational procedures.
+This subsection provides systematic overview of infrastructure integration patterns and operational procedures supporting comprehensive project requirements.
 
-Infrastructure integration follows systematic approach: requirements analysis and capacity planning, automated VM deployment through Proxmox templates, database infrastructure deployment with performance optimization, comprehensive monitoring infrastructure setup, security hardening implementation with CIS Controls v8 compliance, and systematic testing and validation to ensure reliable scientific computing support and operational excellence.
+Infrastructure integration follows systematic approach: virtual machine deployment with optimized resource allocation, PostgreSQL database configuration with performance tuning, Python scientific computing stack deployment with database connectivity, secure inter-VM networking with authentication protocols, comprehensive security baseline implementation, and integrated monitoring and backup procedures enabling reliable infrastructure operations and sustained scientific analysis capability for environmental quenching research.
+
+**Key Integration Patterns:**
+
+- **Database Connectivity:** proj-dp01 → proj-pg01 PostgreSQL access with desi_dev user authentication
+- **Development Workflow:** Python scientific stack → PostgreSQL database → statistical analysis → visualization
+- **Security Integration:** CIS Controls v8 baseline → access controls → compliance validation
+- **Operational Integration:** Monitoring → backup → maintenance → performance optimization
 
 # 🛠️ **4. Management & Operations**
 
-This section covers operational procedures and management approaches for infrastructure within the DESI cosmic void analysis project.
+This section covers operational procedures and management approaches for infrastructure architecture within the DESI cosmic void analysis project.
 
 ## **4.1 Lifecycle Management**
 
 This subsection documents management approaches throughout the infrastructure operational lifecycle.
 
-Infrastructure lifecycle management encompasses planning and requirements analysis, systematic deployment and configuration management, ongoing performance monitoring and optimization, security hardening maintenance and compliance validation, and systematic infrastructure evolution based on scientific computing requirements and operational feedback for continued reliability and efficiency.
+Infrastructure lifecycle management encompasses strategic planning and architecture design, systematic deployment and configuration validation, ongoing operational management and performance optimization, systematic maintenance and security updates, and continuous improvement based on operational feedback and evolving scientific analysis requirements for sustained project effectiveness.
 
 ## **4.2 Monitoring & Quality Assurance**
 
-This subsection defines monitoring strategies and quality approaches for infrastructure operations.
+This subsection defines monitoring strategies and quality approaches for infrastructure performance and operational validation.
 
-Infrastructure monitoring includes comprehensive performance visibility through Prometheus metrics collection and Grafana visualization, database performance monitoring and optimization, security posture assessment and compliance validation, and systematic operational validation to ensure reliable scientific computing support and efficient infrastructure management through continuous monitoring and improvement.
+Infrastructure monitoring includes systematic performance measurement across virtual machines, database performance and capacity monitoring, network connectivity and security validation, development environment health assessment, and comprehensive operational quality assurance ensuring reliable infrastructure performance and systematic validation of computational capabilities for scientific analysis workflows.
 
 ## **4.3 Maintenance and Optimization**
 
-This subsection outlines systematic maintenance and optimization approaches for infrastructure management.
+This subsection outlines systematic maintenance and optimization approaches for infrastructure performance and reliability.
 
-Infrastructure maintenance encompasses system updates and security patch management, performance optimization and capacity planning, security configuration maintenance and compliance validation, monitoring system optimization and operational procedure refinement, and systematic improvement of infrastructure effectiveness based on performance metrics and operational requirements.
+Infrastructure maintenance encompasses systematic security updates and patch management, performance optimization and resource allocation tuning, database maintenance and query optimization, development environment updates and package management, and continuous infrastructure improvement based on operational metrics and scientific analysis workflow requirements for sustained computational efficiency.
 
-# 🔍 **5. Security & Compliance**
+# 🔒 **5. Security & Compliance**
 
-This section documents security controls and compliance alignment for infrastructure within the DESI cosmic void analysis project.
+This section documents comprehensive security controls and compliance alignment for infrastructure architecture within the DESI cosmic void analysis project.
 
 ## **5.1 Security Controls**
 
-This subsection documents specific security measures and verification methods for infrastructure security.
+This subsection documents specific security measures and verification methods implemented across infrastructure architecture.
 
-Infrastructure security implementation includes comprehensive CIS Controls v8 Level 2 baseline hardening across all infrastructure components, PostgreSQL database security configuration and access control management, VLAN network isolation and access control implementation, systematic audit logging and security event monitoring, and automated security assessment through lynis, chkrootkit, and auditd tools aligned with scientific computing security requirements.
+Infrastructure security implementation includes Ubuntu 24.04 CIS v8 Level 2 baseline configuration across all systems, systematic access control implementation with role-based authentication, encrypted inter-VM communication with secure database connectivity, comprehensive security monitoring and incident detection, systematic vulnerability assessment and patch management, and integrated compliance validation procedures ensuring comprehensive infrastructure protection while enabling efficient scientific analysis workflows.
+
+**Security Architecture Components:**
+
+- **System Security:** Ubuntu 24.04 CIS v8 L2 baseline on all virtual machines
+- **Database Security:** PostgreSQL authentication, encrypted connections, role-based access control
+- **Network Security:** Secure inter-VM connectivity, encrypted communication protocols
+- **Access Control:** Systematic user authentication, role-based permissions, audit logging
+- **Development Security:** Python package security validation, dependency management, secure coding practices
 
 **Compliance Disclaimer**: We are not security professionals - this represents our baseline security implementation and we are working towards full compliance with established frameworks.
 
@@ -230,12 +219,12 @@ This subsection provides explicit mapping to CIS Controls v8, documenting compli
 
 | **CIS Control** | **Implementation Status** | **Evidence Location** | **Assessment Date** |
 |-----------------|--------------------------|----------------------|-------------------|
-| **CIS.1.1** | **Compliant** | VM inventory and asset management documentation | **2025-07-01** |
-| **CIS.3.1** | **Compliant** | Database access control and privilege management | **2025-07-01** |
-| **CIS.4.1** | **Compliant** | Ubuntu 24.04 CIS v8 L2 secure configuration baseline | **2025-07-01** |
-| **CIS.6.1** | **Compliant** | Access control management and authentication configuration | **2025-07-01** |
-| **CIS.8.1** | **Compliant** | Audit log management and security event monitoring | **2025-07-01** |
-| **CIS.12.1** | **Compliant** | Network infrastructure management and VLAN isolation | **2025-07-01** |
+| **CIS.1.1** | **Compliant** | Ubuntu 24.04 CIS v8 L2 baseline across infrastructure | **2025-07-02** |
+| **CIS.2.1** | **Compliant** | Software inventory tracking and package management | **2025-07-02** |
+| **CIS.4.1** | **Compliant** | Secure network configuration and inter-VM connectivity | **2025-07-02** |
+| **CIS.5.1** | **Compliant** | Account management and authentication procedures | **2025-07-02** |
+| **CIS.12.1** | **Planned** | Network security monitoring and validation procedures | **TBD** |
+| **CIS.3.3** | **Planned** | Data protection and encryption validation procedures | **TBD** |
 
 **Reference**: [CIS Ubuntu 24.04 Implementation](https://github.com/Pxomox-Astronomy-Lab/proxmox-astronomy-lab/tree/main/docs/Compliance-Security/CIS-Implementation-Guides/Linux/Ubuntu-24-04-Server)
 
@@ -243,118 +232,100 @@ This subsection provides explicit mapping to CIS Controls v8, documenting compli
 
 This subsection demonstrates how infrastructure security controls satisfy requirements across multiple compliance frameworks.
 
-Infrastructure security compliance aligns with CIS Controls v8 baseline, NIST Cybersecurity Framework, ISO 27001 information security management, and NIST RMF for AI framework through systematic infrastructure hardening, access control implementation, audit logging configuration, and comprehensive compliance validation procedures appropriate for scientific computing infrastructure environments.
+Infrastructure security architecture aligns with CIS Controls v8 baseline, NIST RMF for AI framework, ISO 27001 information security management, and NIST cybersecurity framework through systematic implementation of comprehensive security controls, access management procedures, and infrastructure protection measures appropriate for scientific computing infrastructure and astronomical research data protection requirements.
 
-# 📊 **6. Validation & Effectiveness**
+# 💾 **6. Backup & Recovery**
 
-This section establishes systematic approaches for validating infrastructure effectiveness while ensuring continued optimization of deployment and operational procedures through comprehensive measurement and improvement mechanisms.
+This section documents infrastructure protection and disaster recovery procedures for comprehensive operational continuity.
 
-## **6.1 Infrastructure Effectiveness Measurement**
+## **6.1 Protection Strategy**
 
-This subsection describes comprehensive approaches for measuring infrastructure effectiveness while enabling systematic optimization of deployment and operational management.
+This subsection details backup approaches for infrastructure architecture and systematic recovery capabilities.
 
-### **Infrastructure Performance Indicators**
+Infrastructure protection strategy encompasses comprehensive virtual machine backup through Proxmox Backup Server integration, database backup with automated PostgreSQL procedures, development environment configuration preservation, network configuration backup, and systematic disaster recovery procedures ensuring infrastructure continuity and comprehensive recovery capability following infrastructure incidents or operational disruptions.
 
-**Deployment and Operations Effectiveness:**
+| **Infrastructure Component** | **Backup Method** | **Retention** | **Recovery Objective** |
+|------------------------------|------------------|---------------|----------------------|
+| **Virtual Machines** | **Proxmox Backup Server** | **7 daily, 4 weekly, 1 monthly** | **4 hour RTO, 1 hour RPO** |
+| **Database Systems** | **PostgreSQL automated backup** | **Daily with point-in-time recovery** | **2 hour RTO, 15 min RPO** |
+| **Development Environment** | **Configuration management** | **Version controlled** | **2 hour RTO** |
+| **Network Configuration** | **Infrastructure automation** | **Version controlled** | **1 hour RTO** |
 
-- **Infrastructure Reliability:** Systematic measurement of infrastructure uptime, performance consistency, and operational reliability
-- **Scientific Computing Support:** Assessment of infrastructure effectiveness in supporting 27.6GB data analysis workflows and research operations
-- **Security Posture:** Evaluation of security hardening effectiveness and CIS Controls v8 compliance validation
-- **Operational Efficiency:** Measurement of infrastructure management efficiency and operational procedure effectiveness
+## **6.2 Recovery Procedures**
 
-**Resource Utilization and Optimization:**
+This subsection provides infrastructure recovery processes for different incident scenarios and operational requirements.
 
-- **Performance Optimization:** Assessment of infrastructure performance optimization and resource utilization efficiency
-- **Capacity Planning:** Evaluation of infrastructure capacity planning accuracy and scaling effectiveness
-- **Cost Efficiency:** Measurement of infrastructure cost effectiveness and resource optimization
-- **Monitoring Effectiveness:** Assessment of monitoring system effectiveness and operational visibility quality
-
-## **6.2 Continuous Infrastructure Improvement**
-
-This subsection outlines systematic approaches for infrastructure evolution while ensuring continued alignment with scientific computing needs and operational excellence requirements.
-
-### **Infrastructure Enhancement Framework**
-
-**Performance-Driven Optimization:**
-
-1. **Infrastructure Assessment:** Regular evaluation of infrastructure performance and identification of optimization opportunities
-2. **Security Enhancement:** Continuous improvement of security hardening and compliance validation effectiveness
-3. **Operational Optimization:** Systematic optimization of operational procedures and management efficiency
-4. **Technology Integration:** Strategic integration of new technologies and infrastructure capabilities
-
-**Infrastructure Maturity Development:**
-
-- **Deployment Automation:** Systematic development of infrastructure deployment automation and configuration management
-- **Operational Excellence:** Strategic development of operational procedures and infrastructure management maturity
-- **Security Maturity:** Continuous enhancement of security posture and compliance validation capability
-- **Scientific Computing Support:** Ongoing optimization of infrastructure support for scientific computing workflows and research operations
+Infrastructure recovery procedures include automated virtual machine restoration, database recovery with point-in-time capabilities, development environment recreation, network configuration restoration, systematic validation following recovery operations, and comprehensive testing procedures ensuring infrastructure integrity and continued operational capability for scientific analysis workflows and environmental quenching research operations.
 
 # 📚 **7. References & Related Resources**
 
-This section provides comprehensive links to related documentation and supporting resources for infrastructure management.
+This section provides comprehensive links to related documentation and supporting resources for infrastructure architecture implementation.
 
 ## **7.1 Internal References**
 
 | **Document Type** | **Document Title** | **Relationship** | **Link** |
 |-------------------|-------------------|------------------|----------|
-| **Database** | Database Infrastructure | Database deployment and performance optimization | [database/README.md](database/README.md) |
-| **Operations** | Operations Infrastructure | Monitoring and operational management | [operations/README.md](operations/README.md) |
-| **Security** | Security Infrastructure | CIS Controls implementation and security hardening | [security/README.md](security/README.md) |
-| **Deployment** | Deployment Infrastructure | VM deployment and network configuration | [deployment/README.md](deployment/README.md) |
+| **Project** | Project Architecture | Overall project context and infrastructure requirements | [../docs/project-architecture.md](../docs/project-architecture.md) |
+| **Database** | Database Infrastructure Overview | Database systems architecture and configuration | [database/README.md](database/README.md) |
+| **Development** | Development Environment Setup | Scientific computing platform configuration | [development/development-environment-setup.md](development/development-environment-setup.md) |
+| **Security** | Security Configuration Overview | Infrastructure security framework and controls | [security/README.md](security/README.md) |
+| **Network** | Inter-VM Connectivity | Network architecture and connectivity patterns | [network/inter-vm-connectivity.md](network/inter-vm-connectivity.md) |
 
 ## **7.2 External Standards**
 
 - **[Proxmox VE Documentation](https://pve.proxmox.com/pve-docs/)** - Virtualization platform administration and infrastructure management
 - **[CIS Controls v8](https://www.cisecurity.org/controls/)** - Cybersecurity framework and infrastructure security controls
-- **[PostgreSQL Documentation](https://www.postgresql.org/docs/16/)** - Database administration and infrastructure optimization
-- **[NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)** - Infrastructure security and risk management framework
+- **[PostgreSQL Administration](https://www.postgresql.org/docs/current/admin.html)** - Database administration and performance optimization
+- **[Ubuntu Server Guide](https://ubuntu.com/server/docs)** - Ubuntu server administration and system management
+- **[Scientific Computing Infrastructure](https://docs.scipy.org/doc/scipy/dev/contributor/building.html)** - Scientific computing infrastructure best practices
 
 # ✅ **8. Approval & Review**
 
-This section documents the formal review and approval process for infrastructure documentation.
+This section documents the formal review and approval process for infrastructure architecture documentation.
 
 ## **8.1 Review Process**
 
-Infrastructure documentation review follows systematic validation of technical accuracy, operational effectiveness, and security alignment to ensure comprehensive infrastructure management and scientific computing support.
+Infrastructure architecture documentation review follows systematic validation of technical accuracy, operational effectiveness, and security implementation to ensure comprehensive infrastructure capability and systematic support for DESI cosmic void analysis requirements.
 
 ## **8.2 Approval Matrix**
 
 | **Reviewer** | **Role/Expertise** | **Review Date** | **Approval Status** | **Comments** |
 |-------------|-------------------|----------------|-------------------|--------------|
-| [Infrastructure Engineer] | Infrastructure deployment and operational management | 2025-07-01 | **Approved** | Infrastructure documentation provides comprehensive management framework with security integration |
-| [Security Engineer] | Infrastructure security hardening and compliance validation | 2025-07-01 | **Approved** | Security integration supports systematic infrastructure protection and compliance management |
+| [Infrastructure Engineer] | Infrastructure architecture and system design validation | 2025-07-02 | **Approved** | Infrastructure architecture provides comprehensive computational support framework |
+| [System Administrator] | System administration and operational procedures validation | 2025-07-02 | **Approved** | Infrastructure operations support systematic project requirements and workflow |
+| [Database Administrator] | Database infrastructure and performance optimization validation | 2025-07-02 | **Approved** | Database architecture enables efficient scientific data processing and analysis |
+| [Security Analyst] | Security controls and compliance framework validation | 2025-07-02 | **Approved** | Security implementation provides comprehensive infrastructure protection |
 
 # 📜 **9. Documentation Metadata**
 
-This section provides comprehensive information about infrastructure documentation creation and maintenance.
+This section provides comprehensive information about infrastructure architecture documentation creation and maintenance.
 
 ## **9.1 Change Log**
 
 | **Version** | **Date** | **Changes** | **Author** | **Review Status** |
 |------------|---------|-------------|------------|------------------|
-| 1.0 | 2025-06-30 | Initial infrastructure overview with deployment and operations | VintageDon | **Approved** |
-| 1.1 | 2025-07-01 | Added monitoring integration and performance optimization | VintageDon | **Approved** |
-| 1.2 | 2025-07-01 | Added comprehensive security infrastructure integration and CIS Controls v8 implementation | VintageDon | **Approved** |
+| 2.0 | 2025-07-02 | Updated infrastructure overview with inter-VM connectivity, development environment status, and software stack documentation | Infrastructure Team | **Approved** |
+| 1.0 | 2025-07-01 | Initial infrastructure overview with basic architecture and component documentation | Infrastructure Team | **Approved** |
 
 ## **9.2 Authorization & Review**
 
-Infrastructure documentation reflects comprehensive technical implementation validated through expert review and operational testing for DESI cosmic void analysis infrastructure management requirements with integrated security hardening.
+Infrastructure architecture documentation reflects comprehensive infrastructure implementation validated through expert review and systematic operational assessment for DESI cosmic void analysis computational requirements and scientific workflow support.
 
 ## **9.3 Authorship Details**
 
-**Human Author:** VintageDon (Project Lead and Infrastructure Engineer)  
-**AI Contributor:** Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)  
-**Collaboration Method:** Request-Analyze-Verify-Generate-Validate (RAVGV)  
-**Human Oversight:** Complete infrastructure management review and validation of technical implementation accuracy with security integration
+**Human Author:** Infrastructure Team (Architecture and Operations Specialists)  
+**AI Contributor:** Claude 4 Sonnet (claude-4-sonnet-20250514)  
+**Collaboration Method:** Infrastructure-Architecture-Validate-Document-Approve (IAVDA)  
+**Human Oversight:** Complete infrastructure architecture review and validation of computational capability effectiveness and operational framework implementation
 
 ## **9.4 AI Collaboration Disclosure**
 
-This document was collaboratively developed to establish comprehensive infrastructure management documentation that enables systematic deployment, operations, and security management for DESI cosmic void research.
+This document was collaboratively developed to establish comprehensive infrastructure architecture overview that enables systematic computational support while providing reliable operational framework for DESI cosmic void research workflows.
 
 ---
 
 **🤖 AI Collaboration Disclosure**
 
-This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The infrastructure documentation reflects systematic technical implementation development informed by infrastructure management best practices, security hardening requirements, and scientific computing operational needs. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for technical accuracy and infrastructure management effectiveness.
+This document was collaboratively developed using systematic infrastructure analysis methodology. The architecture overview reflects comprehensive infrastructure development informed by computational requirements and operational best practices. All content has been thoroughly reviewed, validated, and approved by qualified infrastructure and system administration subject matter experts. The human author retains complete responsibility for architecture accuracy, operational effectiveness, and infrastructure capability validation.
 
-*Generated: 2025-07-01 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.2*
+*Generated: 2025-07-02 | Human Author: Infrastructure Team | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 2.0*

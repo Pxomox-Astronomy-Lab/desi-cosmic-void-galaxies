@@ -1,10 +1,10 @@
 <!--
 ---
 title: "Database Schema Design"
-description: "PostgreSQL database schema design optimized for DESI astronomical data, including table structures, spatial indexing, and performance optimization for cosmic void analysis"
+description: "Comprehensive database schema design for DESI cosmic void analysis, including optimized table structures, spatial indexing strategies, and performance optimization for 27.6GB astronomical survey data processing"
 author: "VintageDon"
 ai_contributor: "Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)"
-date: "2025-07-01"
+date: "2025-07-02"
 version: "1.0"
 status: "Published"
 tags:
@@ -12,528 +12,664 @@ tags:
 - domain: database-optimization
 - domain: astronomical-data
 - tech: postgresql-16
-- tech: spatial-indexing
-- phase: project-setup
+- tech: spatial-analysis
+- dataset: desivast
+- dataset: fastspecfit
+- phase: data-ingestion
 related_documents:
 - "[Database Infrastructure](README.md)"
 - "[PostgreSQL Implementation](postgresql-implementation.md)"
-- "[Backup and Maintenance](backup-and-maintenance.md)"
 - "[Data Pipeline Design](../../docs/data-pipeline-design.md)"
-- "[Implementation Roadmap](../../ROADMAP.md)"
+- "[Project Architecture](../../docs/project-architecture.md)"
 scientific_context:
   objective: "Environmental quenching analysis"
   dataset: "DESI DR1 BGS"
-  methods: ["database-schema", "spatial-indexing", "query-optimization"]
+  methods: ["spatial-indexing", "cross-matching", "statistical-analysis"]
 ---
 -->
 
-# 🗄️ **Database Schema Design**
+# 🗃️ **Database Schema Design**
 
-This document provides PostgreSQL database schema design optimized for DESI astronomical data, including comprehensive table structures, spatial indexing strategies, and performance optimization techniques supporting efficient processing of 27.6GB DESI DR1 data for cosmic void analysis and environmental quenching research.
+This document provides comprehensive database schema design for DESI cosmic void analysis, including optimized table structures for DESIVAST void catalogs and FastSpecFit galaxy properties, spatial indexing strategies, and performance optimization supporting analysis of 6.4 million galaxies and 10,734 cosmic voids across multiple void-finding algorithms.
 
 # 🎯 **1. Introduction**
 
-This section establishes the foundational context for database schema design within the DESI cosmic void analysis project, defining the systematic approach to data organization that enables efficient astronomical data processing and spatial analysis workflows.
+This section establishes the foundational context for DESI cosmic void analysis database schema design, defining the systematic approach to astronomical data organization that enables efficient spatial queries and environmental classification analysis.
 
 ## **1.1 Purpose**
 
-This subsection explains how the database schema enables systematic organization of DESI DR1 data while supporting efficient spatial queries, environmental classification, and statistical analysis workflows for cosmic void research.
+This subsection explains how the database schema enables systematic organization of DESI DR1 astronomical data while supporting high-performance spatial queries and complex analytical workflows for cosmic void research.
 
-The database schema functions as the systematic data organization foundation for DESI cosmic void analysis, transforming complex astronomical catalog data into structured, indexed, and queryable database design supporting environmental quenching research workflows. The schema provides optimized table structures for DESIVAST void catalogs and FastSpecFit galaxy properties, spatial indexing through Q3C extensions enabling efficient coordinate-based queries, and systematic data organization supporting reproducible scientific analysis. The design supports systematic environmental classification through optimized spatial cross-matching, statistical analysis through efficient aggregation queries, and comprehensive data lineage essential for scientific validation and publication preparation.
+The DESI cosmic void analysis database schema functions as the systematic foundation for organizing 27.6GB of heterogeneous astronomical survey data into structured, queryable, and analysis-optimized relational database tables that enable environmental quenching research. The schema provides optimized table structures for DESIVAST void catalogs across four different algorithms, comprehensive galaxy property organization from FastSpecFit spectral analysis, and sophisticated spatial indexing strategies that support sub-second coordinate-based queries across millions of astronomical objects. The design enables complex spatial correlation analysis through systematic cross-referencing capabilities, statistical comparison workflows, and efficient data retrieval patterns essential for large-scale astronomical research requiring both performance and analytical flexibility.
 
 ## **1.2 Scope**
 
-This subsection defines the boundaries of database schema coverage within the DESI cosmic void analysis project.
+This subsection defines the boundaries of database schema design coverage within the DESI cosmic void analysis project.
 
 | **In Scope** | **Out of Scope** |
 |--------------|------------------|
-| Table structure design for DESI astronomical catalogs | Application-level data processing and analysis algorithms |
-| Spatial indexing and query optimization for astronomical coordinates | FITS file processing and ingestion pipeline implementation |
-| Schema organization and data lineage for scientific reproducibility | Database administration and operational maintenance procedures |
-| Performance optimization and query patterns for environmental analysis | Hardware configuration and PostgreSQL server tuning |
-| Data validation constraints and referential integrity | Backup procedures and disaster recovery implementation |
+| DESIVAST void catalog table structures and indexing | Void-finding algorithm implementation and validation |
+| FastSpecFit galaxy properties schema and optimization | Spectral analysis pipeline configuration and processing |
+| Spatial indexing strategies and coordinate-based queries | Complex statistical analysis procedures and methodologies |
+| Cross-matching table design and referential integrity | Scientific interpretation and result validation frameworks |
+| Performance optimization and query tuning strategies | Application-level caching and connection pool management |
+| Data validation constraints and quality assurance schemas | ETL pipeline implementation and data transformation logic |
 
 ## **1.3 Target Audience**
 
-This subsection identifies stakeholders who interact with database schema design and the technical background required for effective schema implementation and optimization.
+This subsection identifies stakeholders who design, implement, or maintain database schemas and the technical background required for effective astronomical database management.
 
-**Primary Audience:** Database administrators, data architects, and astronomical researchers responsible for schema implementation and query optimization. **Secondary Audience:** Data scientists and pipeline engineers who need to understand data organization and query patterns for analysis workflows. **Required Background:** Understanding of PostgreSQL database design, astronomical data structures, spatial indexing concepts, and query optimization principles.
+**Primary Audience:** Database administrators, data engineers, and astronomical software developers responsible for designing and implementing database schemas for large-scale survey data. **Secondary Audience:** Scientific researchers, data analysts, and infrastructure engineers who need to understand data organization and query capabilities. **Required Background:** Understanding of relational database design principles, spatial indexing concepts, PostgreSQL optimization techniques, and familiarity with astronomical coordinate systems and survey data structures.
 
 ## **1.4 Overview**
 
-This subsection provides context about schema design organization and its relationship to the broader DESI cosmic void analysis project and scientific research objectives.
+This subsection provides context about database schema organization and its relationship to the broader DESI cosmic void analysis data processing and scientific analysis workflows.
 
-The database schema establishes systematic data organization foundation, transforming complex astronomical catalog structures into optimized, queryable, and scientifically meaningful database design that enables efficient environmental classification, systematic statistical analysis, and reproducible scientific validation through comprehensive schema architecture and performance optimization.
+The DESI cosmic void analysis database schema establishes systematic data organization foundation, transforming diverse astronomical survey catalogs into integrated, performance-optimized relational structures that enable environmental classification research, complex spatial correlation analysis, and efficient statistical comparison workflows through comprehensive table design, sophisticated indexing strategies, and systematic constraint management designed for astronomical research requiring both data integrity and query performance.
 
 # 🔗 **2. Dependencies & Relationships**
 
-This section maps how database schema design integrates with data processing components and establishes organizational relationships that enable systematic astronomical data management and analysis workflows.
+This section maps how database schema design integrates with data processing components and establishes systematic relationships that enable efficient astronomical data management and analysis workflows.
 
 ## **2.1 Related Services**
 
-This subsection identifies project components that utilize or depend on database schema design and data organization.
+This subsection identifies project components that provide data sources, utilize schema structures, or support database operations within the cosmic void analysis framework.
 
 | **Service** | **Relationship Type** | **Integration Points** | **Documentation** |
 |-------------|----------------------|------------------------|-------------------|
-| **Data Pipeline** | **Implements** | FITS ingestion, data validation, schema population | [Data Pipeline Design](../../docs/data-pipeline-design.md) |
-| **PostgreSQL Implementation** | **Utilizes** | Database configuration, performance tuning, spatial extensions | [PostgreSQL Implementation](postgresql-implementation.md) |
-| **Scientific Analysis** | **Queries** | Spatial cross-matching, statistical aggregation, result extraction | [Source Code Overview](../../src/README.md) |
-| **Database Infrastructure** | **Supports** | Overall database architecture and operational procedures | [Database Infrastructure](README.md) |
+| **Data Pipeline** | **Populates** | ETL workflows, FITS ingestion, data validation, batch loading procedures | [Data Pipeline Design](../../docs/data-pipeline-design.md) |
+| **PostgreSQL Infrastructure** | **Implements** | Database server, performance tuning, role management, backup procedures | [PostgreSQL Implementation](postgresql-implementation.md) |
+| **Scientific Analysis** | **Queries** | Complex spatial queries, statistical analysis, environmental classification | [Analysis Workflows](../../src/analysis/README.md) |
+| **Monitoring Systems** | **Monitors** | Query performance, table statistics, index effectiveness, storage utilization | [Performance Monitoring](postgresql-monitoring-integration.md) |
 
 ## **2.2 Policy Implementation**
 
-This subsection connects database schema design to data management governance and scientific research requirements.
+This subsection connects database schema design to data management governance frameworks and performance requirements supporting astronomical research objectives.
 
-Database schema implementation directly supports several critical data management objectives:
+Database schema implementation directly supports several critical data management and research objectives:
 
-- **Data Quality Policy** - Systematic schema design ensuring data integrity and validation through constraints and referential integrity
-- **Scientific Reproducibility Policy** - Schema organization enabling systematic data lineage and reproducible analysis workflows
-- **Performance Policy** - Optimized schema design ensuring efficient query performance for large-scale astronomical data analysis
-- **Data Governance Policy** - Systematic data organization supporting proper data management and scientific collaboration
-- **Compliance Policy** - Schema design aligned with astronomical data standards and research best practices
+- **Data Integrity Policy** - Systematic constraint design and referential integrity ensuring astronomical data consistency and validation
+- **Performance Optimization Policy** - Indexing strategies and query optimization supporting sub-second response times for complex spatial analysis
+- **Scalability Requirements** - Schema design patterns enabling systematic scaling for larger survey datasets and extended analysis requirements
+- **Research Reproducibility Policy** - Standardized data organization and systematic versioning supporting reproducible astronomical research workflows
 
 ## **2.3 Responsibility Matrix**
 
-This subsection establishes clear accountability for database schema activities across project roles.
+This subsection establishes clear accountability for database schema development, implementation, and maintenance activities across different project roles.
 
-| **Activity** | **Database Administrators** | **Data Architects** | **Astronomical Researchers** | **Data Scientists** |
-|--------------|----------------------------|-------------------|------------------------------|-------------------|
-| **Schema Design** | **R** | **A** | **C** | **C** |
-| **Performance Optimization** | **A** | **R** | **C** | **C** |
-| **Data Validation** | **R** | **R** | **A** | **C** |
-| **Query Pattern Design** | **C** | **R** | **A** | **R** |
-| **Index Management** | **A** | **R** | **C** | **C** |
+| **Activity** | **Database Administrators** | **Data Engineers** | **Astronomical Researchers** | **Infrastructure Engineers** |
+|--------------|----------------------------|-------------------|------------------------------|------------------------------|
+| **Schema Design** | **A** | **R** | **R** | **C** |
+| **Index Optimization** | **A** | **R** | **C** | **C** |
+| **Performance Tuning** | **A** | **C** | **C** | **R** |
+| **Data Validation** | **R** | **A** | **R** | **I** |
+| **Query Optimization** | **R** | **C** | **A** | **I** |
 
 *R: Responsible, A: Accountable, C: Consulted, I: Informed*
 
 # ⚙️ **3. Technical Implementation**
 
-This section provides comprehensive specifications for database schema design, table structures, and indexing strategies that support DESI cosmic void analysis and astronomical data processing requirements.
+This section provides comprehensive specifications for database schema implementation, including detailed table structures, indexing strategies, and optimization techniques supporting DESI cosmic void analysis performance requirements.
 
 ## **3.1 Architecture & Design**
 
-This subsection explains the schema architecture and design decisions that enable efficient astronomical data management and spatial analysis for DESI cosmic void research.
+This subsection explains the database schema architecture and design principles that enable efficient astronomical data management and complex spatial analysis workflows.
 
-The schema architecture employs logical separation between raw catalog data and derived analysis products, featuring dedicated schemas for data organization, optimized table structures for astronomical data types, and comprehensive spatial indexing for coordinate-based queries. The design utilizes PostgreSQL's advanced features including Q3C spatial indexing for astronomical coordinates, materialized views for performance optimization, and systematic foreign key relationships ensuring data integrity.
-
-**Schema Organization Overview:**
+The database schema employs multi-schema organization with raw data preservation and analysis-optimized derived tables, comprehensive spatial indexing for coordinate-based queries, and systematic constraint management ensuring data integrity across heterogeneous astronomical catalogs. The design utilizes PostgreSQL advanced features including spatial extensions, partial indexing for performance optimization, and systematic normalization patterns that balance query performance with storage efficiency essential for large-scale astronomical survey data management.
 
 ```mermaid
-graph TB
-    subgraph "raw_catalogs Schema"
-        RC1[fastspec_iron<br/>Galaxy Properties<br/>26.4GB, ~13M rows]
-        RC2[desivast_voids<br/>Void Catalog<br/>~10K voids]
-        RC3[desivast_void_members<br/>Membership Links<br/>~500K members]
-    end
+graph TD
+    A[DESI DR1 Raw Data] --> B[raw_catalogs Schema]
+    B --> C[desivast_voids]
+    B --> D[fastspecfit_galaxies] 
+    B --> E[void_galaxy_members]
     
-    subgraph "science_analysis Schema"
-        SA1[galaxy_sample_full<br/>Unified Analysis Table<br/>Cross-matched Data]
-        SA2[void_statistics<br/>Derived Statistics<br/>Analysis Results]
-        SA3[environmental_classification<br/>Classification Results<br/>Void/Wall Assignment]
-    end
+    C --> F[science_analysis Schema]
+    D --> F
+    E --> F
     
-    subgraph "Spatial Indexing"
-        IDX1[Q3C Spatial Index<br/>RA/DEC Coordinates]
-        IDX2[Distance Calculation<br/>Comoving Distances]
-        IDX3[Cross-Match Optimization<br/>Spatial Queries]
-    end
+    F --> G[unified_galaxy_sample]
+    F --> H[environmental_classification]
+    F --> I[statistical_analysis_views]
     
-    RC1 --> SA1
-    RC2 --> SA1
-    RC3 --> SA1
-    SA1 --> SA2
-    SA1 --> SA3
-    RC1 --> IDX1
-    RC2 --> IDX1
-    IDX1 --> IDX2
-    IDX2 --> IDX3
-    
-    style RC1 fill:#e3f2fd
-    style SA1 fill:#fff3e0
-    style IDX1 fill:#e8f5e8
+    style B fill:#e1f5fe
+    style F fill:#f3e5f5
+    style G fill:#e8f5e8
 ```
 
-## **3.2 Structure and Organization**
+## **3.2 Schema Organization**
 
-This subsection describes the detailed table structures and schema organization that support DESI astronomical data and environmental analysis workflows.
+This subsection describes the systematic organization of database schemas and their specific roles in supporting astronomical data processing and analysis workflows.
 
-### **Raw Catalogs Schema (raw_catalogs)**
-
-**Purpose:** Pristine, read-only storage of original DESI DR1 catalog data
-
-#### **fastspec_iron Table**
+### **Schema Structure and Purpose**
 
 ```sql
-CREATE TABLE raw_catalogs.fastspec_iron (
-    -- Primary identifier
-    TARGETID BIGINT PRIMARY KEY,
-    
-    -- Coordinates and redshift
-    RA DOUBLE PRECISION NOT NULL,
-    DEC DOUBLE PRECISION NOT NULL,
-    Z DOUBLE PRECISION,
-    
-    -- Galaxy properties from FastSpecFit
-    LOGMSTAR REAL,              -- log10(stellar mass / M_sun)
-    SFR REAL,                   -- Star formation rate (M_sun/yr)
-    VDISP REAL,                 -- Velocity dispersion (km/s)
-    AGE REAL,                   -- Age (Gyr)
-    AV REAL,                    -- Dust extinction (mag)
-    
-    -- Spectral diagnostics
-    DN4000 REAL,                -- 4000 Angstrom break strength
-    OII_3727_FLUX REAL,         -- [OII] emission line flux
-    HALPHA_FLUX REAL,           -- H-alpha emission line flux
-    
-    -- Metadata
-    SURVEY VARCHAR(10),         -- 'main'
-    PROGRAM VARCHAR(10),        -- 'bright'
-    HEALPIX INTEGER,            -- HEALPix pixel for data organization
-    
-    -- Data quality indicators
-    ZWARN INTEGER DEFAULT 0,    -- Redshift warning flags
-    DELTACHI2 REAL,             -- Template fit quality
-    
-    -- Constraints
-    CONSTRAINT valid_coordinates CHECK (
-        RA >= 0 AND RA <= 360 AND 
-        DEC >= -90 AND DEC <= 90
-    ),
-    CONSTRAINT valid_redshift CHECK (Z >= 0 AND Z <= 5),
-    CONSTRAINT valid_mass CHECK (LOGMSTAR >= 6 AND LOGMSTAR <= 13)
-);
+-- Primary schema organization for DESI cosmic void analysis
+CREATE SCHEMA IF NOT EXISTS raw_catalogs;
+COMMENT ON SCHEMA raw_catalogs IS 'Pristine astronomical survey data from DESI DR1 archives';
 
--- Spatial indexing for astronomical coordinates
-CREATE INDEX fastspec_iron_q3c_idx ON raw_catalogs.fastspec_iron 
-    USING BTREE (q3c_ang2ipix(ra, dec));
+CREATE SCHEMA IF NOT EXISTS science_analysis;  
+COMMENT ON SCHEMA science_analysis IS 'Derived datasets and analysis-ready tables for cosmic void research';
 
--- Performance indexes
-CREATE INDEX fastspec_iron_z_idx ON raw_catalogs.fastspec_iron (z);
-CREATE INDEX fastspec_iron_logmstar_idx ON raw_catalogs.fastspec_iron (logmstar);
-CREATE INDEX fastspec_iron_healpix_idx ON raw_catalogs.fastspec_iron (healpix);
+CREATE SCHEMA IF NOT EXISTS data_quality;
+COMMENT ON SCHEMA data_quality IS 'Data validation metrics and quality assurance tables';
 ```
 
-#### **desivast_voids Table**
+**Schema Organization Principles**:
+
+- **raw_catalogs**: Immutable source data preserving original FITS catalog structure and content
+- **science_analysis**: Derived tables optimized for spatial analysis and statistical comparison workflows  
+- **data_quality**: Validation metrics and quality monitoring tables supporting data integrity assurance
+
+## **3.3 Table Structures and Specifications**
+
+This subsection provides detailed table definitions including column specifications, data types, and constraints supporting DESI astronomical data requirements.
+
+### **DESIVAST Void Catalogs**
+
+**Primary Void Properties Table**:
 
 ```sql
 CREATE TABLE raw_catalogs.desivast_voids (
-    VOID_ID SERIAL PRIMARY KEY,
-    VOID_NAME VARCHAR(255) UNIQUE NOT NULL,
+    -- Primary identification and metadata
+    void_id SERIAL PRIMARY KEY,
+    algorithm VARCHAR(20) NOT NULL CHECK (algorithm IN ('REVOLVER', 'VIDE', 'VoidFinder', 'ZOBOV')),
+    galactic_cap VARCHAR(3) NOT NULL CHECK (galactic_cap IN ('NGC', 'SGC')),
+    original_void_index INTEGER NOT NULL,
     
-    -- Void center coordinates
-    RA DOUBLE PRECISION NOT NULL,
-    DEC DOUBLE PRECISION NOT NULL,
-    Z REAL NOT NULL,
+    -- Spatial coordinates and physical properties
+    ra DOUBLE PRECISION NOT NULL CHECK (ra >= 0.0 AND ra <= 360.0),
+    dec DOUBLE PRECISION NOT NULL CHECK (dec >= -90.0 AND dec <= 90.0),
+    redshift DOUBLE PRECISION CHECK (redshift >= 0.0 AND redshift <= 10.0),
     
-    -- Void properties
-    EFFECTIVE_RADIUS REAL NOT NULL,  -- Mpc/h
-    VOLUME REAL,                     -- (Mpc/h)^3
-    DELTA_DENSITY REAL,              -- Density contrast
+    -- Physical void characteristics  
+    radius_mpc_h DOUBLE PRECISION NOT NULL CHECK (radius_mpc_h > 0.0),
+    effective_radius_mpc_h DOUBLE PRECISION CHECK (effective_radius_mpc_h > 0.0),
     
-    -- Void-finding algorithm
-    ALGORITHM VARCHAR(50) NOT NULL,  -- 'VoidFinder', 'V2_REVOLVER', 'V2_VIDE'
+    -- Cartesian coordinates (Mpc/h)
+    x_mpc_h DOUBLE PRECISION,
+    y_mpc_h DOUBLE PRECISION, 
+    z_mpc_h DOUBLE PRECISION,
     
-    -- Survey coverage
-    HEMISPHERE VARCHAR(3) NOT NULL,  -- 'NGC' or 'SGC'
+    -- Void classification and properties
+    edge_flag INTEGER DEFAULT 0,
+    void_depth INTEGER,
+    total_area DOUBLE PRECISION,
+    edge_area DOUBLE PRECISION,
     
-    -- Constraints
-    CONSTRAINT valid_void_coordinates CHECK (
-        RA >= 0 AND RA <= 360 AND 
-        DEC >= -90 AND DEC <= 90
-    ),
-    CONSTRAINT valid_void_redshift CHECK (Z >= 0 AND Z <= 1),
-    CONSTRAINT valid_radius CHECK (EFFECTIVE_RADIUS > 0),
-    CONSTRAINT valid_algorithm CHECK (
-        ALGORITHM IN ('VoidFinder', 'V2_REVOLVER', 'V2_VIDE')
-    ),
-    CONSTRAINT valid_hemisphere CHECK (HEMISPHERE IN ('NGC', 'SGC'))
+    -- Data provenance and quality
+    source_file VARCHAR(255) NOT NULL,
+    ingestion_timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    data_quality_score REAL CHECK (data_quality_score >= 0.0 AND data_quality_score <= 1.0),
+    
+    -- Unique constraint ensuring no duplicate voids per algorithm
+    CONSTRAINT unique_void_per_algorithm UNIQUE (algorithm, galactic_cap, original_void_index)
 );
 
--- Spatial indexing for void centers
-CREATE INDEX desivast_voids_q3c_idx ON raw_catalogs.desivast_voids 
-    USING BTREE (q3c_ang2ipix(ra, dec));
-
--- Algorithm and property indexes
-CREATE INDEX desivast_voids_algorithm_idx ON raw_catalogs.desivast_voids (algorithm);
-CREATE INDEX desivast_voids_radius_idx ON raw_catalogs.desivast_voids (effective_radius);
-CREATE INDEX desivast_voids_z_idx ON raw_catalogs.desivast_voids (z);
+-- Table comments and documentation
+COMMENT ON TABLE raw_catalogs.desivast_voids IS 'DESIVAST void catalog properties across all algorithms with spatial optimization';
+COMMENT ON COLUMN raw_catalogs.desivast_voids.algorithm IS 'Void-finding algorithm: REVOLVER, VIDE, VoidFinder, or ZOBOV';
+COMMENT ON COLUMN raw_catalogs.desivast_voids.radius_mpc_h IS 'Void effective radius in Mpc/h units';
+COMMENT ON COLUMN raw_catalogs.desivast_voids.data_quality_score IS 'Quality assessment score from data validation pipeline';
 ```
 
-#### **desivast_void_members Table**
+**Algorithm-Specific Coverage**:
+
+```yaml
+desivast_coverage_actual:
+  REVOLVER:
+    total_voids: 1992
+    ngc_voids: 1692  
+    sgc_voids: 300
+    structure: "6 HDUs with triangle mesh data"
+    
+  VIDE: 
+    total_voids: 1478
+    ngc_voids: 1258
+    sgc_voids: 220
+    structure: "6 HDUs with delaunay triangulation"
+    
+  VoidFinder:
+    total_voids: 3765
+    ngc_voids: 3241
+    sgc_voids: 524  
+    structure: "3 HDUs with maximal spheres and holes"
+    
+  ZOBOV:
+    total_voids: 3519
+    ngc_voids: 2950
+    sgc_voids: 569
+    structure: "4 HDUs with watershed void identification"
+```
+
+### **FastSpecFit Galaxy Properties**
+
+**Comprehensive Galaxy Catalog Table**:
 
 ```sql
-CREATE TABLE raw_catalogs.desivast_void_members (
-    MEMBER_ID SERIAL PRIMARY KEY,
+CREATE TABLE raw_catalogs.fastspecfit_galaxies (
+    -- DESI unique identifier (primary key)
+    targetid BIGINT PRIMARY KEY,
     
-    -- Foreign key relationships
-    VOID_NAME VARCHAR(255) NOT NULL 
-        REFERENCES raw_catalogs.desivast_voids(VOID_NAME) ON DELETE CASCADE,
-    TARGETID BIGINT NOT NULL 
-        REFERENCES raw_catalogs.fastspec_iron(TARGETID) ON DELETE CASCADE,
+    -- Spatial coordinates and survey metadata
+    ra DOUBLE PRECISION NOT NULL CHECK (ra >= 0.0 AND ra <= 360.0),
+    dec DOUBLE PRECISION NOT NULL CHECK (dec >= -90.0 AND dec <= 90.0),
+    healpix_id INTEGER NOT NULL CHECK (healpix_id >= 0 AND healpix_id <= 11),
     
-    -- Membership properties
-    IS_INTERIOR_GALAXY BOOLEAN NOT NULL DEFAULT TRUE,
-    DISTANCE_TO_CENTER REAL,     -- Mpc/h
-    VOID_RADIUS_FRACTION REAL,   -- distance / void_radius
+    -- Redshift and distance measurements
+    z DOUBLE PRECISION NOT NULL CHECK (z >= 0.0 AND z <= 10.0),
+    z_err DOUBLE PRECISION CHECK (z_err >= 0.0),
     
-    -- Unique constraint prevents duplicate memberships
-    CONSTRAINT unique_membership UNIQUE (VOID_NAME, TARGETID),
+    -- Stellar population properties (primary science drivers)
+    logmstar REAL NOT NULL CHECK (logmstar >= -15.0 AND logmstar <= 20.0),
+    logmstar_err REAL CHECK (logmstar_err >= 0.0),
+    sfr REAL NOT NULL CHECK (sfr >= 0.0),
+    sfr_err REAL CHECK (sfr_err >= 0.0),
     
-    -- Validation constraints
-    CONSTRAINT valid_distance CHECK (DISTANCE_TO_CENTER >= 0),
-    CONSTRAINT valid_fraction CHECK (
-        VOID_RADIUS_FRACTION >= 0 AND VOID_RADIUS_FRACTION <= 1.5
-    )
+    -- Derived star formation metrics
+    ssfr REAL GENERATED ALWAYS AS (
+        CASE 
+            WHEN logmstar IS NOT NULL AND sfr > 0 
+            THEN sfr / (10.0 ^ logmstar)
+            ELSE NULL 
+        END
+    ) STORED,
+    log_ssfr REAL GENERATED ALWAYS AS (
+        CASE 
+            WHEN logmstar IS NOT NULL AND sfr > 0 
+            THEN LOG(sfr / (10.0 ^ logmstar))
+            ELSE NULL 
+        END  
+    ) STORED,
+    
+    -- Additional stellar population parameters
+    age_gyr REAL CHECK (age_gyr >= 0.0 AND age_gyr <= 15.0),
+    metallicity REAL,
+    av_extinction REAL CHECK (av_extinction >= 0.0),
+    
+    -- Spectral line measurements
+    d4000 REAL CHECK (d4000 >= 0.0),
+    oii_3727_flux REAL,
+    oii_3727_flux_err REAL CHECK (oii_3727_flux_err >= 0.0),
+    halpha_flux REAL, 
+    halpha_flux_err REAL CHECK (halpha_flux_err >= 0.0),
+    
+    -- Data quality and processing flags
+    spectral_quality_flag INTEGER DEFAULT 0,
+    photometric_quality_flag INTEGER DEFAULT 0,
+    fit_chi2 REAL CHECK (fit_chi2 >= 0.0),
+    fit_quality_score REAL CHECK (fit_quality_score >= 0.0 AND fit_quality_score <= 1.0),
+    
+    -- Data provenance
+    source_file VARCHAR(255) NOT NULL,
+    ingestion_timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Performance indexes for cross-matching
-CREATE INDEX void_members_targetid_idx ON raw_catalogs.desivast_void_members (targetid);
-CREATE INDEX void_members_void_idx ON raw_catalogs.desivast_void_members (void_name);
-CREATE INDEX void_members_interior_idx ON raw_catalogs.desivast_void_members (is_interior_galaxy);
+-- Table documentation
+COMMENT ON TABLE raw_catalogs.fastspecfit_galaxies IS 'FastSpecFit galaxy properties from DESI DR1 BGS with derived star formation metrics';
+COMMENT ON COLUMN raw_catalogs.fastspecfit_galaxies.targetid IS 'DESI unique target identifier (64-bit integer)';
+COMMENT ON COLUMN raw_catalogs.fastspecfit_galaxies.ssfr IS 'Specific star formation rate (SFR/M*) computed automatically';
+COMMENT ON COLUMN raw_catalogs.fastspecfit_galaxies.log_ssfr IS 'Log specific star formation rate for analysis workflows';
 ```
 
-### **Science Analysis Schema (science_analysis)**
+**Galaxy Sample Characteristics**:
 
-**Purpose:** Derived tables and analysis results for scientific workflows
+```yaml
+fastspecfit_sample_stats:
+  total_galaxies: 6445927
+  coordinate_range:
+    ra: "0.0001° to 360.0°"
+    dec: "-19.46° to 79.27°"
+  redshift_range: "0.001 to 6.408"
+  stellar_mass_range: "-12.1 to 15.6 (log M☉)"
+  sfr_range: "0.0 to 76,710 M☉/yr"
+  healpix_distribution: "12 files, 45,570 to 1,358,627 galaxies per file"
+```
 
-#### **galaxy_sample_full Table**
+### **Environmental Classification and Cross-Matching**
+
+**Void-Galaxy Association Table**:
 
 ```sql
-CREATE TABLE science_analysis.galaxy_sample_full AS
-SELECT 
-    -- Galaxy identifiers and coordinates
-    fsf.targetid,
-    fsf.ra, fsf.dec, fsf.z,
-    
-    -- Galaxy properties
-    fsf.logmstar, fsf.sfr,
-    fsf.vdisp, fsf.age, fsf.av,
-    fsf.dn4000, fsf.oii_3727_flux, fsf.halpha_flux,
-    
-    -- Derived properties
-    (fsf.sfr / POWER(10, fsf.logmstar)) AS ssfr,  -- Specific SFR
-    CASE 
-        WHEN fsf.sfr > 0 THEN log(fsf.sfr / POWER(10, fsf.logmstar))
-        ELSE NULL 
-    END AS log_ssfr,
+CREATE TABLE raw_catalogs.void_galaxy_members (
+    -- Primary key and referential integrity
+    association_id SERIAL PRIMARY KEY,
+    targetid BIGINT NOT NULL REFERENCES raw_catalogs.fastspecfit_galaxies(targetid),
+    void_id INTEGER NOT NULL REFERENCES raw_catalogs.desivast_voids(void_id),
     
     -- Environmental classification
-    vm.void_name,
-    v.algorithm AS void_algorithm,
-    vm.is_interior_galaxy,
-    vm.distance_to_center,
-    v.effective_radius AS void_radius,
+    environment_type VARCHAR(20) NOT NULL CHECK (environment_type IN ('void_interior', 'void_shell', 'wall', 'filament')),
+    classification_confidence REAL CHECK (classification_confidence >= 0.0 AND classification_confidence <= 1.0),
     
-    -- Environmental assignment
-    CASE 
-        WHEN vm.targetid IS NOT NULL AND vm.is_interior_galaxy THEN 'Void'
-        WHEN vm.targetid IS NOT NULL AND NOT vm.is_interior_galaxy THEN 'Shell'
-        ELSE 'Wall'
-    END AS environment,
+    -- Spatial relationship metrics
+    distance_to_void_center_mpc DOUBLE PRECISION NOT NULL CHECK (distance_to_void_center_mpc >= 0.0),
+    distance_in_void_radii REAL NOT NULL CHECK (distance_in_void_radii >= 0.0),
     
-    -- Data quality
-    fsf.zwarn, fsf.deltachi2
+    -- Cross-matching methodology and quality
+    matching_algorithm VARCHAR(50) NOT NULL DEFAULT 'spatial_crossmatch',
+    matching_timestamp TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    quality_flags INTEGER DEFAULT 0,
     
-FROM raw_catalogs.fastspec_iron AS fsf
-LEFT JOIN raw_catalogs.desivast_void_members AS vm ON fsf.targetid = vm.targetid
-LEFT JOIN raw_catalogs.desivast_voids AS v ON vm.void_name = v.void_name;
+    -- Ensure unique galaxy-void associations per algorithm
+    CONSTRAINT unique_galaxy_void_algorithm UNIQUE (targetid, void_id)
+);
 
--- Primary key and indexes for analysis table
-ALTER TABLE science_analysis.galaxy_sample_full ADD PRIMARY KEY (targetid);
-
-CREATE INDEX galaxy_sample_environment_idx ON science_analysis.galaxy_sample_full (environment);
-CREATE INDEX galaxy_sample_logmstar_idx ON science_analysis.galaxy_sample_full (logmstar);
-CREATE INDEX galaxy_sample_ssfr_idx ON science_analysis.galaxy_sample_full (ssfr);
-CREATE INDEX galaxy_sample_algorithm_idx ON science_analysis.galaxy_sample_full (void_algorithm);
+-- Table documentation  
+COMMENT ON TABLE raw_catalogs.void_galaxy_members IS 'Galaxy-void associations with environmental classification';
+COMMENT ON COLUMN raw_catalogs.void_galaxy_members.distance_in_void_radii IS 'Distance normalized by void effective radius';
+COMMENT ON COLUMN raw_catalogs.void_galaxy_members.environment_type IS 'Environmental classification based on void proximity';
 ```
 
-## **3.3 Integration and Procedures**
+### **Analysis-Ready Science Tables**
 
-This subsection provides systematic overview of schema integration patterns and query optimization strategies supporting environmental analysis and scientific research workflows.
-
-### **Query Optimization Patterns**
-
-**Spatial Cross-Matching Query:**
+**Unified Galaxy Sample for Statistical Analysis**:
 
 ```sql
--- Efficient void membership determination using Q3C
+CREATE TABLE science_analysis.unified_galaxy_sample AS
 SELECT 
+    -- Galaxy identification and basic properties
     g.targetid,
-    v.void_name,
-    q3c_dist(g.ra, g.dec, v.ra, v.dec) * 
-        (SELECT cosmology_distance(g.z)) AS comoving_distance
-FROM raw_catalogs.fastspec_iron g
-CROSS JOIN raw_catalogs.desivast_voids v
-WHERE q3c_join(g.ra, g.dec, v.ra, v.dec, v.effective_radius / 1000.0)  -- Convert to degrees
-    AND ABS(g.z - v.z) < 0.01;  -- Redshift proximity filter
+    g.ra,
+    g.dec,
+    g.z,
+    g.healpix_id,
+    
+    -- Stellar population properties
+    g.logmstar,
+    g.sfr,
+    g.ssfr,
+    g.log_ssfr,
+    g.age_gyr,
+    g.metallicity,
+    
+    -- Spectral diagnostics
+    g.d4000,
+    g.oii_3727_flux,
+    g.halpha_flux,
+    
+    -- Environmental context (prioritized by algorithm)
+    COALESCE(
+        vm_vf.environment_type,
+        vm_revolver.environment_type, 
+        vm_vide.environment_type,
+        vm_zobov.environment_type,
+        'field'
+    ) AS primary_environment,
+    
+    -- Void association details
+    v_best.algorithm AS associated_void_algorithm,
+    v_best.radius_mpc_h AS associated_void_radius,
+    vm_best.distance_in_void_radii,
+    
+    -- Data quality indicators
+    g.fit_quality_score,
+    g.spectral_quality_flag
+    
+FROM raw_catalogs.fastspecfit_galaxies g
+
+-- Environmental associations with prioritization
+LEFT JOIN raw_catalogs.void_galaxy_members vm_vf 
+    ON g.targetid = vm_vf.targetid 
+    AND vm_vf.void_id IN (SELECT void_id FROM raw_catalogs.desivast_voids WHERE algorithm = 'VoidFinder')
+    
+LEFT JOIN raw_catalogs.void_galaxy_members vm_revolver
+    ON g.targetid = vm_revolver.targetid
+    AND vm_revolver.void_id IN (SELECT void_id FROM raw_catalogs.desivast_voids WHERE algorithm = 'REVOLVER')
+    
+LEFT JOIN raw_catalogs.void_galaxy_members vm_vide
+    ON g.targetid = vm_vide.targetid  
+    AND vm_vide.void_id IN (SELECT void_id FROM raw_catalogs.desivast_voids WHERE algorithm = 'VIDE')
+    
+LEFT JOIN raw_catalogs.void_galaxy_members vm_zobov
+    ON g.targetid = vm_zobov.targetid
+    AND vm_zobov.void_id IN (SELECT void_id FROM raw_catalogs.desivast_voids WHERE algorithm = 'ZOBOV')
+
+-- Best void association (highest confidence)
+LEFT JOIN raw_catalogs.void_galaxy_members vm_best ON g.targetid = vm_best.targetid
+LEFT JOIN raw_catalogs.desivast_voids v_best ON vm_best.void_id = v_best.void_id
+
+WHERE g.fit_quality_score > 0.7  -- High-quality galaxies only
+  AND g.spectral_quality_flag = 0  -- No spectral issues
+  AND g.z BETWEEN 0.01 AND 0.5;   -- Local universe focus
+
+-- Create index for analysis queries
+CREATE INDEX idx_unified_sample_environment ON science_analysis.unified_galaxy_sample (primary_environment);
+CREATE INDEX idx_unified_sample_mass_sfr ON science_analysis.unified_galaxy_sample (logmstar, sfr);
+CREATE INDEX idx_unified_sample_spatial ON science_analysis.unified_galaxy_sample (ra, dec);
 ```
 
-**Statistical Analysis Query:**
+## **3.4 Indexing Strategy and Performance Optimization**
+
+This subsection describes comprehensive indexing strategies and performance optimization techniques supporting efficient astronomical queries and spatial analysis workflows.
+
+### **Spatial Indexing Framework**
+
+**Core Spatial Indices**:
 
 ```sql
--- Environmental comparison with statistical aggregation
-SELECT 
-    environment,
-    void_algorithm,
-    COUNT(*) as galaxy_count,
-    AVG(logmstar) as mean_logmstar,
-    STDDEV(logmstar) as std_logmstar,
-    AVG(log_ssfr) as mean_log_ssfr,
-    STDDEV(log_ssfr) as std_log_ssfr,
-    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY logmstar) as median_logmstar
-FROM science_analysis.galaxy_sample_full
-WHERE zwarn = 0 AND log_ssfr IS NOT NULL
-GROUP BY environment, void_algorithm
-ORDER BY environment, void_algorithm;
+-- High-performance spatial indexing for coordinate-based queries
+CREATE INDEX idx_voids_spatial_btree ON raw_catalogs.desivast_voids (ra, dec);
+CREATE INDEX idx_voids_spatial_coordinates ON raw_catalogs.desivast_voids 
+    USING btree (ra, dec) WHERE ra IS NOT NULL AND dec IS NOT NULL;
+
+CREATE INDEX idx_galaxies_spatial_btree ON raw_catalogs.fastspecfit_galaxies (ra, dec);
+CREATE INDEX idx_galaxies_healpix_spatial ON raw_catalogs.fastspecfit_galaxies (healpix_id, ra, dec);
+
+-- Spherical coordinate optimization for astronomical queries
+-- Note: Q3C extension would be optimal for astronomical coordinates
+-- CREATE INDEX idx_voids_q3c ON raw_catalogs.desivast_voids (q3c_ang2ipix(ra, dec));
+-- CREATE INDEX idx_galaxies_q3c ON raw_catalogs.fastspecfit_galaxies (q3c_ang2ipix(ra, dec));
 ```
 
-**Performance Optimization Guidelines:**
+**Scientific Property Indices**:
 
-- Use Q3C spatial indexes for all coordinate-based queries
-- Apply ZWARN = 0 filter early to exclude problematic redshifts
-- Leverage materialized views for frequently accessed aggregations
-- Partition large tables by HEALPix pixel for parallel processing
-- Use appropriate JOIN strategies based on data size and selectivity
+```sql
+-- Mass and star formation rate optimization
+CREATE INDEX idx_galaxies_stellar_mass ON raw_catalogs.fastspecfit_galaxies (logmstar) 
+    WHERE logmstar IS NOT NULL;
+    
+CREATE INDEX idx_galaxies_sfr ON raw_catalogs.fastspecfit_galaxies (sfr) 
+    WHERE sfr > 0.0;
+    
+CREATE INDEX idx_galaxies_mass_sfr_composite ON raw_catalogs.fastspecfit_galaxies (logmstar, sfr)
+    WHERE logmstar IS NOT NULL AND sfr >= 0.0;
+
+-- Redshift-based analysis optimization  
+CREATE INDEX idx_galaxies_redshift ON raw_catalogs.fastspecfit_galaxies (z);
+CREATE INDEX idx_galaxies_redshift_mass ON raw_catalogs.fastspecfit_galaxies (z, logmstar);
+
+-- Void algorithm and size optimization
+CREATE INDEX idx_voids_algorithm ON raw_catalogs.desivast_voids (algorithm);
+CREATE INDEX idx_voids_algorithm_radius ON raw_catalogs.desivast_voids (algorithm, radius_mpc_h);
+```
+
+**Environmental Classification Indices**:
+
+```sql
+-- Cross-matching and environmental analysis optimization
+CREATE INDEX idx_void_members_targetid ON raw_catalogs.void_galaxy_members (targetid);
+CREATE INDEX idx_void_members_void_id ON raw_catalogs.void_galaxy_members (void_id);
+CREATE INDEX idx_void_members_environment ON raw_catalogs.void_galaxy_members (environment_type);
+
+-- Composite indices for complex environmental queries
+CREATE INDEX idx_void_members_distance ON raw_catalogs.void_galaxy_members 
+    (targetid, distance_in_void_radii, environment_type);
+```
+
+### **Query Performance Optimization**
+
+**Estimated Query Performance Targets**:
+
+```yaml
+query_performance_targets:
+  spatial_coordinate_search: "<100ms for 1° radius searches"
+  stellar_mass_selection: "<50ms for log mass range queries" 
+  environmental_classification: "<200ms for void vs. field comparisons"
+  cross_matching_queries: "<500ms for galaxy-void association"
+  statistical_analysis: "<1s for sample size >100k galaxies"
+  
+optimization_strategies:
+  partial_indexing: "Index only high-quality data with WHERE clauses"
+  composite_indexing: "Multi-column indices for common query patterns"
+  constraint_optimization: "Check constraints enabling index-only scans"
+  maintenance_automation: "Regular VACUUM and ANALYZE scheduling"
+```
+
+**Performance Monitoring Integration**:
+
+```sql
+-- Query performance monitoring views
+CREATE VIEW data_quality.index_performance AS
+SELECT 
+    schemaname,
+    tablename,
+    indexname,
+    idx_tup_read,
+    idx_tup_fetch,
+    idx_tup_read::float / NULLIF(idx_tup_fetch, 0) AS selectivity_ratio
+FROM pg_stat_user_indexes
+WHERE schemaname IN ('raw_catalogs', 'science_analysis')
+ORDER BY idx_tup_read DESC;
+
+-- Table size and growth monitoring
+CREATE VIEW data_quality.table_statistics AS
+SELECT 
+    schemaname,
+    tablename, 
+    n_tup_ins AS total_inserts,
+    n_tup_upd AS total_updates,
+    n_tup_del AS total_deletes,
+    n_live_tup AS live_tuples,
+    n_dead_tup AS dead_tuples,
+    last_vacuum,
+    last_analyze
+FROM pg_stat_user_tables
+WHERE schemaname IN ('raw_catalogs', 'science_analysis');
+```
 
 # 🛠️ **4. Management & Operations**
 
-This section covers schema management approaches and operational procedures for maintaining database design effectiveness and supporting ongoing scientific research requirements.
+This section covers operational procedures for database schema management including maintenance strategies, performance monitoring, and systematic optimization approaches supporting astronomical research workflows.
 
 ## **4.1 Lifecycle Management**
 
-This subsection documents management approaches throughout the schema operational lifecycle and database evolution requirements.
+This subsection documents management approaches throughout the database schema operational lifecycle from initial deployment through production optimization and maintenance.
 
-Schema lifecycle management encompasses design validation and implementation testing, systematic deployment through migration scripts, performance monitoring and optimization procedures, schema evolution planning and version control, and systematic maintenance ensuring continued schema effectiveness and query performance throughout project lifecycle.
+Database schema lifecycle management encompasses systematic table creation and population procedures, index optimization and maintenance scheduling, constraint validation and performance monitoring, and comprehensive backup strategies ensuring data integrity and availability for astronomical research workflows requiring both performance and reliability.
 
 ## **4.2 Monitoring & Quality Assurance**
 
-This subsection defines monitoring strategies and quality approaches for schema effectiveness and query performance validation.
+This subsection defines monitoring strategies and quality approaches for database schema performance and astronomical data integrity validation.
 
-Schema monitoring includes query performance tracking and optimization identification, index effectiveness monitoring and maintenance planning, data quality validation ensuring constraint compliance, storage utilization monitoring and capacity planning, and systematic quality assurance ensuring schema reliability and performance optimization for scientific analysis requirements.
+### **Data Quality Monitoring Framework**
+
+**Schema Health Monitoring**:
+
+```sql
+-- Data quality validation queries
+SELECT 
+    'desivast_voids' AS table_name,
+    COUNT(*) AS total_records,
+    COUNT(DISTINCT algorithm) AS algorithms_present,
+    COUNT(DISTINCT galactic_cap) AS caps_present,
+    AVG(radius_mpc_h) AS avg_void_radius,
+    MIN(ra) AS min_ra, MAX(ra) AS max_ra,
+    MIN(dec) AS min_dec, MAX(dec) AS max_dec
+FROM raw_catalogs.desivast_voids
+
+UNION ALL
+
+SELECT 
+    'fastspecfit_galaxies' AS table_name,
+    COUNT(*) AS total_records,
+    COUNT(DISTINCT healpix_id) AS healpix_files,
+    NULL AS caps_present,
+    AVG(sfr) AS avg_sfr,
+    MIN(ra) AS min_ra, MAX(ra) AS max_ra,
+    MIN(dec) AS min_dec, MAX(dec) AS max_dec  
+FROM raw_catalogs.fastspecfit_galaxies;
+```
+
+**Performance Metrics Tracking**:
+
+- **Query Response Times**: Coordinate searches <100ms, mass selections <50ms
+- **Index Utilization**: >95% index usage for spatial and scientific property queries
+- **Data Integrity**: 100% referential integrity validation across cross-matching tables
+- **Storage Efficiency**: <10% table bloat, regular maintenance scheduling
 
 ## **4.3 Maintenance and Optimization**
 
-This subsection outlines systematic maintenance and optimization approaches for schema evolution and performance enhancement.
+This subsection outlines systematic maintenance and optimization approaches for database schema performance and data integrity.
 
-Schema maintenance encompasses systematic performance optimization and index tuning, constraint validation and data quality monitoring, schema version management and migration procedures, query pattern analysis and optimization recommendations, and systematic improvement of schema design based on usage patterns and scientific research requirements evolution.
+Schema maintenance encompasses automated VACUUM and ANALYZE scheduling for optimal query performance, systematic index monitoring and rebuilding procedures, constraint validation and quality assurance checking, and comprehensive backup verification ensuring continued reliability and performance optimization for astronomical research data management requirements.
 
-# 🔒 **5. Security & Compliance**
+# 📚 **6. References & Related Resources**
 
-This section documents security controls and compliance alignment for database schema design within the DESI cosmic void analysis project.
+This section provides comprehensive links to related documentation and supporting resources for database schema implementation and astronomical data management.
 
-## **5.1 Security Controls**
-
-This subsection documents specific security measures and verification methods for schema design and data access.
-
-Schema security implementation includes systematic access control through role-based permissions, data validation through comprehensive constraints and integrity checks, audit logging for schema modifications and sensitive data access, systematic backup validation ensuring data protection, and comprehensive security monitoring aligned with CIS Controls v8 baseline requirements. Security controls ensure appropriate data protection while enabling efficient scientific analysis and research collaboration.
-
-**Compliance Disclaimer**: We are not security professionals - this represents our baseline security implementation and we are working towards full compliance with established frameworks.
-
-## **5.2 CIS Controls Mapping**
-
-This subsection provides explicit mapping to CIS Controls v8, documenting compliance status and implementation evidence for schema security.
-
-| **CIS Control** | **Implementation Status** | **Evidence Location** | **Assessment Date** |
-|-----------------|--------------------------|----------------------|-------------------|
-| **CIS.3.3** | **Compliant** | Role-based access control and schema permissions | **2025-07-01** |
-| **CIS.8.2** | **Planned** | Database audit logging and access monitoring | **TBD** |
-| **CIS.13.1** | **Planned** | Data protection and constraint validation | **TBD** |
-
-**Reference**: [CIS Ubuntu 24.04 Implementation](https://github.com/Pxomox-Astronomy-Lab/proxmox-astronomy-lab/tree/main/docs/Compliance-Security/CIS-Implementation-Guides/Linux/Ubuntu-24-04-Server)
-
-## **5.3 Framework Compliance**
-
-This subsection demonstrates how schema security controls satisfy requirements across multiple compliance frameworks.
-
-Schema security design aligns with CIS Controls v8 baseline, NIST RMF for AI framework, ISO 27001 information security management, and NIST cybersecurity framework through systematic implementation of data access controls, integrity validation, and audit procedures appropriate for scientific computing environments and astronomical data analysis.
-
-# 💾 **6. Backup & Recovery**
-
-This section documents schema-specific backup considerations and recovery procedures for database design protection.
-
-## **6.1 Protection Strategy**
-
-This subsection details backup approaches and protection strategies for schema design and data organization.
-
-Schema protection strategy encompasses systematic backup of schema definitions and constraints, data dictionary backup ensuring schema documentation preservation, migration script version control for schema evolution tracking, and systematic integration with database backup procedures ensuring complete schema and data protection capability.
-
-| **Schema Component** | **Protection Method** | **Recovery Procedure** | **Validation Required** |
-|---------------------|---------------------|----------------------|------------------------|
-| **Table Structures** | **DDL backup with pg_dump** | **Schema recreation from DDL** | **Constraint validation** |
-| **Spatial Indexes** | **Index definition backup** | **Index recreation and validation** | **Performance testing** |
-| **Data Constraints** | **Constraint definition backup** | **Constraint restoration and testing** | **Data integrity verification** |
-
-## **6.2 Recovery Procedures**
-
-This subsection provides schema recovery processes and database design restoration procedures.
-
-Schema recovery procedures include systematic schema restoration from backup definitions, constraint validation and integrity checking, index recreation and performance validation, and comprehensive testing ensuring complete schema functionality and query performance following recovery operations.
-
-# 📚 **7. References & Related Resources**
-
-This section provides comprehensive links to related documentation and supporting resources for database schema implementation and optimization.
-
-## **7.1 Internal References**
+## **6.1 Internal References**
 
 | **Document Type** | **Document Title** | **Relationship** | **Link** |
 |-------------------|-------------------|------------------|----------|
-| **Database** | PostgreSQL Implementation | Database configuration and extension setup | [postgresql-implementation.md](postgresql-implementation.md) |
-| **Pipeline** | Data Pipeline Design | Schema population and data ingestion procedures | [../../docs/data-pipeline-design.md](../../docs/data-pipeline-design.md) |
-| **Infrastructure** | Database Infrastructure | Overall database architecture and operational context | [README.md](README.md) |
-| **Implementation** | Implementation Roadmap | Schema deployment timeline and development phases | [../../ROADMAP.md](../../ROADMAP.md) |
+| **Infrastructure** | Database Infrastructure | Database deployment and architecture overview | [README.md](README.md) |
+| **Implementation** | PostgreSQL Implementation | Database server configuration and optimization | [postgresql-implementation.md](postgresql-implementation.md) |
+| **Data Pipeline** | Data Pipeline Design | ETL workflows and data ingestion procedures | [../../docs/data-pipeline-design.md](../../docs/data-pipeline-design.md) |
+| **Architecture** | Project Architecture | System integration and component relationships | [../../docs/project-architecture.md](../../docs/project-architecture.md) |
+| **Monitoring** | Performance Monitoring | Database monitoring and operational procedures | [postgresql-monitoring-integration.md](postgresql-monitoring-integration.md) |
 
-## **7.2 External Standards**
+## **6.2 External Standards**
 
-- **[PostgreSQL Documentation](https://www.postgresql.org/docs/current/)** - Database design best practices and advanced features
-- **[Q3C Spatial Extension](https://github.com/segasai/q3c)** - Astronomical coordinate indexing and spatial query optimization
-- **[DESI Data Model](https://desidatamodel.readthedocs.io/)** - Official DESI data format specifications and catalog structures
-- **[IAU Recommendations](https://www.iau.org/science/scientific_bodies/commissions/)** - Astronomical data standards and coordinate system specifications
+- **[PostgreSQL Documentation](https://www.postgresql.org/docs/current/)** - Official PostgreSQL documentation for schema design and optimization
+- **[PostGIS Spatial Database](https://postgis.net/)** - Spatial database extension for geographic object support
+- **[Q3C Astronomical Indexing](https://github.com/segasai/q3c)** - PostgreSQL extension for astronomical coordinate indexing
+- **[DESI Data Model](https://desidatamodel.readthedocs.io/)** - Official DESI survey data model and schema specifications
+- **[Astronomical Database Design](https://www.ivoa.net/)** - International Virtual Observatory Alliance standards for astronomical databases
 
-# ✅ **8. Approval & Review**
+# ✅ **7. Approval & Review**
 
-This section documents the formal review and approval process for database schema design documentation.
+This section documents the formal review and approval process for database schema design and implementation procedures.
 
-## **8.1 Review Process**
+## **7.1 Review Process**
 
-Database schema documentation review follows systematic validation of design effectiveness, performance optimization, and scientific analysis support to ensure comprehensive schema design and query optimization capability.
+Database schema design documentation review follows systematic validation of table structures, indexing strategies, and performance optimization techniques to ensure efficient astronomical data management and analysis workflow support.
 
-## **8.2 Approval Matrix**
+## **7.2 Approval Matrix**
 
 | **Reviewer** | **Role/Expertise** | **Review Date** | **Approval Status** | **Comments** |
 |-------------|-------------------|----------------|-------------------|--------------|
-| [Database Administrator] | PostgreSQL schema design and optimization | 2025-07-01 | **Approved** | Schema design provides comprehensive framework for astronomical data management |
-| [Data Architect] | Data organization and query pattern optimization | 2025-07-01 | **Approved** | Schema architecture supports efficient environmental analysis workflows |
-| [Astronomical Researcher] | Scientific data requirements and analysis patterns | 2025-07-01 | **Approved** | Schema design enables systematic environmental classification and statistical analysis |
+| [Database Administrator] | Database schema design and PostgreSQL optimization | 2025-07-02 | **Approved** | Schema design provides comprehensive framework for DESI data analysis |
+| [Data Engineer] | ETL integration and data pipeline compatibility | 2025-07-02 | **Approved** | Table structures support efficient data ingestion and transformation |
+| [Astronomical Researcher] | Scientific data requirements and analysis workflows | 2025-07-02 | **Approved** | Schema enables systematic environmental quenching analysis with optimal query performance |
 
-# 📜 **9. Documentation Metadata**
+# 📜 **8. Documentation Metadata**
 
-This section provides comprehensive information about database schema documentation creation and maintenance.
+This section provides comprehensive information about database schema design documentation creation and maintenance within the DESI cosmic void analysis project.
 
-## **9.1 Change Log**
+## **8.1 Change Log**
 
 | **Version** | **Date** | **Changes** | **Author** | **Review Status** |
 |------------|---------|-------------|------------|------------------|
-| 1.0 | 2025-07-01 | Initial database schema design with comprehensive table structures and optimization | VintageDon | **Approved** |
+| 1.0 | 2025-07-02 | Initial database schema design with optimized table structures and spatial indexing | VintageDon | **Approved** |
 
-## **9.2 Authorization & Review**
+## **8.2 Authorization & Review**
 
-Database schema documentation reflects comprehensive data organization design validated through expert review and technical consultation for DESI cosmic void analysis requirements and astronomical data processing optimization.
+Database schema design documentation reflects comprehensive relational database design validated through astronomical data analysis requirements and PostgreSQL performance optimization best practices for DESI cosmic void research.
 
-## **9.3 Authorship Details**
+## **8.3 Authorship Details**
 
 **Human Author:** VintageDon (Project Lead and Architect)  
 **AI Contributor:** Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)  
 **Collaboration Method:** Request-Analyze-Verify-Generate-Validate (RAVGV)  
-**Human Oversight:** Complete database schema review and validation of design optimization accuracy
+**Human Oversight:** Complete database schema review and validation of table structures, indexing strategies, and performance optimization accuracy
 
-## **9.4 AI Collaboration Disclosure**
+## **8.4 AI Collaboration Disclosure**
 
-This document was collaboratively developed to establish comprehensive database schema design that enables systematic astronomical data organization and efficient query processing for DESI cosmic void research.
+This document was collaboratively developed to establish comprehensive database schema design that enables systematic organization and analysis of DESI DR1 astronomical data for cosmic void environmental quenching research.
 
 ---
 
 **🤖 AI Collaboration Disclosure**
 
-This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The database schema documentation reflects systematic data organization development informed by PostgreSQL best practices and astronomical database design requirements. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for schema design accuracy and query optimization effectiveness.
+This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The database schema design reflects systematic relational database development informed by astronomical data management best practices, PostgreSQL optimization techniques, and DESI cosmic void analysis requirements. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for technical accuracy and database schema effectiveness.
 
-*Generated: 2025-07-01 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*
+*Generated: 2025-07-02 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*
