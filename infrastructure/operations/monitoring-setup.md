@@ -1,7 +1,7 @@
 <!--
 ---
 title: "Monitoring Setup"
-description: "Comprehensive monitoring architecture setup for DESI cosmic void analysis infrastructure, including Prometheus configuration, Grafana dashboard deployment, and postgres_exporter integration supporting scientific computing operations"
+description: "Comprehensive monitoring architecture setup for DESI cosmic void analysis infrastructure, including Prometheus configuration, Grafana dashboard deployment, and AlertManager integration supporting scientific computing operations"
 author: "VintageDon"
 ai_contributor: "Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)"
 date: "2025-07-01"
@@ -30,7 +30,7 @@ scientific_context:
 
 # 📊 **Monitoring Setup**
 
-This document provides comprehensive monitoring architecture setup for DESI cosmic void analysis infrastructure, including Prometheus configuration, Grafana dashboard deployment, and postgres_exporter integration that supports reliable scientific computing operations and systematic performance optimization.
+This document provides comprehensive monitoring architecture setup for DESI cosmic void analysis infrastructure, including Prometheus configuration, Grafana dashboard deployment, postgres_exporter integration, and AlertManager configuration that supports reliable scientific computing operations and systematic performance optimization.
 
 # 🎯 **1. Introduction**
 
@@ -51,8 +51,8 @@ This subsection defines the boundaries of monitoring infrastructure coverage wit
 | Prometheus metrics collection and configuration | Application-level debugging and development monitoring |
 | Grafana dashboard deployment and visualization | Scientific analysis result validation and interpretation |
 | PostgreSQL monitoring with postgres_exporter | Network infrastructure monitoring beyond connectivity validation |
-| Docker-based monitoring service deployment | AlertManager configuration and advanced alerting |
-| Basic monitoring visualization and metrics collection | Physical hardware monitoring beyond resource utilization |
+| AlertManager configuration and notification management | Operating system administration beyond performance metrics |
+| Docker-based monitoring service deployment | Physical hardware monitoring beyond resource utilization |
 
 ## **1.3 Target Audience**
 
@@ -64,7 +64,7 @@ This subsection identifies stakeholders who interact with monitoring infrastruct
 
 This subsection provides context about monitoring infrastructure organization and its relationship to the broader DESI cosmic void analysis project.
 
-Monitoring infrastructure establishes systematic operational visibility foundation, transforming infrastructure components into comprehensively monitored and observable systems that enable proactive performance management, systematic operational optimization, and reliable scientific computing support through integrated monitoring and visualization capabilities.
+Monitoring infrastructure establishes systematic operational visibility foundation, transforming infrastructure components into comprehensively monitored and observable systems that enable proactive performance management, systematic operational optimization, and reliable scientific computing support through integrated monitoring, alerting, and visualization capabilities.
 
 # 🔗 **2. Dependencies & Relationships**
 
@@ -78,7 +78,7 @@ This subsection identifies project components that depend on, utilize, or contri
 |-------------|----------------------|------------------------|-------------------|
 | **PostgreSQL Database** | **Monitors** | Database performance metrics, connection monitoring, query analysis | [PostgreSQL Monitoring Integration](../database/postgresql-monitoring-integration.md) |
 | **Infrastructure Platform** | **Observes** | VM resource utilization, network connectivity, storage performance | [Infrastructure Overview](../README.md) |
-| **Operations Framework** | **Enables** | Operational visibility, performance monitoring, system optimization | [Operations Overview](README.md) |
+| **Operations Framework** | **Enables** | Operational visibility, alert management, performance optimization | [Operations Overview](README.md) |
 | **Backup Infrastructure** | **Validates** | Backup status monitoring, operational health, recovery validation | [Backup Strategy](../database/backup-and-maintenance.md) |
 
 ## **2.2 Policy Implementation**
@@ -88,9 +88,9 @@ This subsection connects monitoring infrastructure to project governance and ope
 Monitoring infrastructure implementation directly supports several critical project objectives:
 
 - **Operational Excellence Policy** - Comprehensive infrastructure monitoring and systematic performance optimization for reliable operations
-- **Performance Management Policy** - Real-time performance tracking and proactive optimization through systematic monitoring
+- **Performance Management Policy** - Real-time performance tracking and proactive optimization through systematic monitoring and alerting
+- **Incident Response Policy** - Rapid incident detection and response through automated monitoring and alert management procedures
 - **Capacity Planning Policy** - Resource utilization tracking and capacity planning support through comprehensive metrics collection
-- **Infrastructure Reliability Policy** - Systematic monitoring for infrastructure health and performance validation
 
 ## **2.3 Responsibility Matrix**
 
@@ -102,7 +102,7 @@ This subsection establishes clear accountability for monitoring infrastructure a
 | **Prometheus Configuration** | **R** | **A** | **C** | **C** |
 | **Grafana Dashboard Setup** | **R** | **R** | **C** | **C** |
 | **Database Monitoring** | **C** | **C** | **A** | **C** |
-| **Performance Analysis** | **A** | **R** | **R** | **C** |
+| **Alert Management** | **A** | **R** | **C** | **C** |
 
 *R: Responsible, A: Accountable, C: Consulted, I: Informed*
 
@@ -114,7 +114,7 @@ This section provides comprehensive specifications for monitoring infrastructure
 
 This subsection explains the monitoring architecture and design decisions that enable systematic infrastructure visibility and operational monitoring.
 
-Monitoring architecture employs Prometheus-based metrics collection with Docker containerization, Grafana visualization dashboards, and integrated postgres_exporter for database monitoring. The implementation utilizes standardized dashboard configurations and comprehensive metrics collection that enables proactive performance management and operational excellence for scientific computing infrastructure.
+Monitoring architecture employs Prometheus-based metrics collection with Docker containerization, Grafana visualization dashboards, and integrated postgres_exporter for database monitoring. The implementation utilizes standardized dashboard configurations, systematic alert management, and comprehensive metrics collection that enables proactive performance management and operational excellence for scientific computing infrastructure.
 
 ## **3.2 Prometheus Configuration**
 
@@ -126,6 +126,8 @@ This subsection describes the systematic configuration of Prometheus for compreh
 
 ```yaml
 # /mnt/docker/prometheus/docker-compose.yaml
+version: '3.8'
+
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -155,6 +157,9 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
+rule_files:
+  - "rules/*.yml"
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
@@ -172,6 +177,12 @@ scrape_configs:
         - 'proj-pg01.radioastronomy.io:9100'
         - 'proj-dp01.radioastronomy.io:9100'
     scrape_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
 ```
 
 ## **3.3 Grafana Dashboard Configuration**
@@ -184,6 +195,8 @@ This subsection provides systematic configuration of Grafana dashboards for comp
 
 ```yaml
 # /mnt/docker/grafana/docker-compose.yaml
+version: '3.8'
+
 services:
   grafana:
     image: grafana/grafana:latest
@@ -221,21 +234,49 @@ datasources:
     isDefault: true
 ```
 
-### **PostgreSQL Monitoring Integration**
+### **AlertManager Integration**
 
-**Postgres Exporter Status:**
+**AlertManager Configuration:**
 
-The postgres_exporter is already deployed and operational on proj-pg01:
+```yaml
+# /mnt/docker/alertmanager/docker-compose.yaml
+version: '3.8'
 
-```bash
-# Verify postgres_exporter metrics
-curl http://proj-pg01.radioastronomy.io:9187/metrics
+services:
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+    restart: unless-stopped
+```
 
-# Key metrics available:
-# - pg_up: PostgreSQL instance availability
-# - pg_stat_database_*: Database performance statistics
-# - pg_settings_*: PostgreSQL configuration parameters
-# - pg_locks_count: Database lock monitoring
+**Alert Rules Configuration:**
+
+```yaml
+# /mnt/docker/prometheus/rules/database_alerts.yml
+groups:
+  - name: postgresql_alerts
+    rules:
+      - alert: PostgreSQLDown
+        expr: pg_up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL instance is down"
+          description: "PostgreSQL instance {{ $labels.instance }} has been down for more than 5 minutes."
+
+      - alert: PostgreSQLHighConnections
+        expr: pg_stat_database_numbackends > 180
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "PostgreSQL high connection count"
+          description: "PostgreSQL instance {{ $labels.instance }} has {{ $value }} connections (threshold: 180)."
 ```
 
 # 🛠️ **4. Management & Operations**
@@ -246,19 +287,19 @@ This section covers operational procedures and management approaches for monitor
 
 This subsection documents management approaches throughout the monitoring infrastructure operational lifecycle.
 
-Monitoring lifecycle management encompasses initial deployment and configuration, ongoing metrics validation and dashboard maintenance, performance threshold monitoring, and systematic monitoring infrastructure optimization based on operational requirements and infrastructure evolution.
+Monitoring lifecycle management encompasses initial deployment and configuration, ongoing metrics validation and dashboard maintenance, alert rule optimization and threshold adjustment, and systematic monitoring infrastructure optimization based on operational requirements and infrastructure evolution.
 
 ## **4.2 Monitoring & Quality Assurance**
 
 This subsection defines monitoring strategies and quality approaches for monitoring infrastructure operations.
 
-Monitoring quality assurance includes systematic validation of metrics collection accuracy, dashboard functionality verification, monitoring coverage assessment, and comprehensive monitoring effectiveness evaluation to ensure reliable infrastructure visibility and operational monitoring capabilities.
+Monitoring quality assurance includes systematic validation of metrics collection accuracy, dashboard functionality verification, alert rule testing and validation, and comprehensive monitoring coverage assessment to ensure reliable infrastructure visibility and operational monitoring effectiveness.
 
 ## **4.3 Maintenance and Optimization**
 
 This subsection outlines systematic maintenance and optimization approaches for monitoring infrastructure.
 
-Monitoring maintenance encompasses container updates and security patches, dashboard configuration optimization, metrics retention management, performance monitoring refinement, and systematic optimization based on monitoring infrastructure utilization and operational feedback.
+Monitoring maintenance encompasses container updates and security patches, dashboard configuration optimization, metrics retention management, alert rule refinement, and systematic performance optimization based on monitoring infrastructure utilization and operational feedback.
 
 # 🔍 **5. Security & Compliance**
 
@@ -303,15 +344,15 @@ This subsection describes comprehensive approaches for measuring monitoring infr
 
 - **Metrics Collection Accuracy:** Validation of metrics collection completeness and accuracy across all monitored infrastructure components
 - **Dashboard Functionality:** Assessment of Grafana dashboard performance, visualization accuracy, and user interface effectiveness
+- **Alert Response Time:** Measurement of alert generation speed and notification delivery effectiveness for rapid incident response
 - **Monitoring Coverage:** Evaluation of monitoring scope completeness and identification of visibility gaps across infrastructure components
-- **Performance Tracking:** Measurement of monitoring system performance and resource utilization effectiveness
 
 **Operational Excellence Effectiveness:**
 
 - **Performance Optimization:** Assessment of monitoring contribution to infrastructure performance optimization and systematic improvement
+- **Incident Response:** Evaluation of monitoring effectiveness in rapid incident detection and response capability enhancement
 - **Capacity Planning:** Measurement of monitoring data utility for systematic capacity planning and resource optimization decisions
 - **Operational Efficiency:** Assessment of monitoring infrastructure impact on overall operational effectiveness and systematic improvement
-- **System Reliability:** Evaluation of monitoring effectiveness in supporting infrastructure reliability and performance validation
 
 ## **6.2 Continuous Monitoring Improvement**
 
@@ -323,7 +364,7 @@ This subsection outlines systematic approaches for monitoring infrastructure evo
 
 1. **Metrics Analysis:** Regular assessment of monitoring effectiveness and identification of optimization opportunities across infrastructure components
 2. **Dashboard Evolution:** Continuous improvement of Grafana dashboard configurations based on operational feedback and visualization effectiveness
-3. **Coverage Enhancement:** Systematic expansion of monitoring coverage based on infrastructure growth and operational requirements
+3. **Alert Optimization:** Systematic refinement of alert rules and thresholds based on operational experience and incident response effectiveness
 4. **Technology Integration:** Evaluation and integration of new monitoring technologies that enhance infrastructure visibility and operational excellence
 
 **Monitoring Scalability Planning:**
@@ -351,7 +392,7 @@ This section provides comprehensive links to related documentation and supportin
 - **[Prometheus Documentation](https://prometheus.io/docs/)** - Monitoring and alerting toolkit configuration and best practices
 - **[Grafana Documentation](https://grafana.com/docs/)** - Visualization and dashboard platform configuration guides
 - **[PostgreSQL Exporter](https://github.com/prometheus-community/postgres_exporter)** - Database monitoring exporter configuration and metrics
-- **[Docker Compose Documentation](https://docs.docker.com/compose/)** - Container orchestration and deployment best practices
+- **[AlertManager Documentation](https://prometheus.io/docs/alerting/latest/alertmanager/)** - Alert management and notification configuration
 
 # ✅ **8. Approval & Review**
 
@@ -376,7 +417,7 @@ This section provides comprehensive information about monitoring setup documenta
 
 | **Version** | **Date** | **Changes** | **Author** | **Review Status** |
 |------------|---------|-------------|------------|------------------|
-| 1.0 | 2025-07-01 | Initial monitoring setup with Prometheus, Grafana, and postgres_exporter configuration | VintageDon | **Approved** |
+| 1.0 | 2025-07-01 | Initial monitoring setup with Prometheus, Grafana, and AlertManager configuration | VintageDon | **Approved** |
 
 ## **9.2 Authorization & Review**
 
@@ -399,4 +440,4 @@ This document was collaboratively developed to establish comprehensive monitorin
 
 This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The monitoring setup documentation reflects systematic technical implementation development informed by infrastructure monitoring best practices and scientific computing requirements. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for technical accuracy and monitoring infrastructure effectiveness.
 
-*Generated: 2025-07-01 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*
+*Generated: 2025-07-01 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.
