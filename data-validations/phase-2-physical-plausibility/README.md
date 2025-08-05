@@ -129,7 +129,7 @@ This section establishes the validation framework relationships within the broad
 
 ### **Redshift Distribution**
 
-![Redshift Distribution](../../assets/plots/stage-2-validation-plot/redshift_distribution.png)
+![Redshift Distribution](../../assets/plots/stage-2-validation-plots/redshift_distribution.png)
 
 **Scientific Purpose**: Validates the redshift coverage and selection function of the DESI DR1 Bright Galaxy Survey.
 
