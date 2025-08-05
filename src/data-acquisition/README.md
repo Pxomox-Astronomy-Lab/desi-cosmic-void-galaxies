@@ -1,350 +1,226 @@
 <!--
 ---
-title: "Data Acquisition Overview"
-description: "Comprehensive data acquisition framework for DESI cosmic void analysis project, including automated download scripts, FITS data validation, and systematic data procurement procedures supporting 27.6GB DESI DR1 BGS dataset acquisition"
-author: "VintageDon"
-ai_contributor: "Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)"
-date: "2025-07-02"
+title: "Data Acquisition"
+description: "High-performance ETL pipeline for ingesting DESI DR1 Value-Added Catalogs into PostgreSQL database infrastructure, optimized for astronomical survey data processing"
+author: "VintageDon - https://github.com/vintagedon"
+ai_contributor: "Claude Sonnet 4"
+date: "2025-08-04"
 version: "1.0"
 status: "Published"
 tags:
-- type: project-doc
-- domain: cosmic-voids
-- domain: astronomical-data
-- tech: python-astronomy
-- tech: desi-dr1
-- dataset: desivast
-- dataset: fastspecfit
-- phase: data-ingestion
+- type: [directory-overview/etl-pipeline/data-ingestion]
+- domain: [astronomical-data/survey-catalogs/database-systems]
+- tech: [postgresql/fits-processing/bulk-ingestion]
+- phase: [phase-1]
 related_documents:
-- "[Project README](../../README.md)"
-- "[Data Pipeline Design](../../docs/data-pipeline-design.md)"
-- "[Database Schema](../../infrastructure/database/database-schema.md)"
-- "[Data Download Procedures](data-download-procedures.md)"
-- "[Data Analysis Overview](../data-analysis/README.md)"
-scientific_context:
-  objective: "Environmental quenching analysis"
-  dataset: "DESI DR1 BGS"
-  methods: ["data-acquisition", "fits-validation", "automated-download"]
+- "[Source Code Overview](../README.md)"
+- "[Data Analysis](../data-analysis/README.md)"
+- "[Dataset Validations](../dataset-validations/README.md)"
 ---
 -->
 
-# 📡 **Data Acquisition Overview**
+# 🗄️ **Data Acquisition**
 
-This directory contains comprehensive data acquisition framework for DESI cosmic void analysis project, providing automated download scripts, FITS data validation procedures, and systematic data procurement that enables reliable acquisition of 27.6GB DESI DR1 BGS dataset supporting environmental quenching research and cosmic void analysis workflows.
+High-performance ETL (Extract, Transform, Load) pipeline for ingesting DESI DR1 Value-Added Catalogs into the project's PostgreSQL database infrastructure. This directory contains specialized scripts that transform distributed FITS astronomical data into analysis-ready database tables, utilizing industry-standard bulk loading techniques optimized for large-scale survey data processing.
 
-# 🎯 **1. Introduction**
+## **Overview**
 
-This section establishes the foundational context for DESI data acquisition, defining the systematic approach to scientific data procurement that enables environmental quenching analysis and cosmic void research.
+The Data Acquisition pipeline addresses the critical challenge of efficiently ingesting millions of astronomical objects from multiple source catalogs while maintaining data integrity and scientific precision. The implementation prioritizes performance through PostgreSQL's native `COPY FROM` command, achieving orders-of-magnitude speed improvements over traditional row-by-row insertion methods. This approach enables rapid iteration during the analysis phase and provides a solid foundation for systematic astronomical research.
 
-## **1.1 Purpose**
-
-This subsection explains how DESI data acquisition enables systematic scientific data procurement while supporting reproducible environmental quenching analysis through automated download procedures and comprehensive data validation.
-
-DESI data acquisition functions as the systematic framework for procuring scientific datasets from DESI DR1 repositories, transforming remote astronomical data into locally accessible, validated, and analysis-ready datasets that enable environmental quenching research. The acquisition framework provides automated download procedures, comprehensive data validation, and systematic quality assurance essential for processing 27.6GB DESI DR1 BGS data while ensuring data integrity and research reproducibility through optimized network utilization and validation procedures.
-
-## **1.2 Scope**
-
-This subsection defines the boundaries of DESI data acquisition coverage within the cosmic void analysis project.
-
-| **In Scope** | **Out of Scope** |
-|--------------|------------------|
-| DESI DR1 FastSpecFit and DESIVAST catalog acquisition | DESI survey operations and data generation procedures |
-| Automated download scripts and network optimization | External astronomical survey data beyond DESI DR1 |
-| FITS data validation and integrity verification | Data processing and analysis beyond acquisition validation |
-| Local storage organization and access management | Long-term data archival and backup procedures |
-| Download performance monitoring and optimization | Network infrastructure management beyond project scope |
-
-## **1.3 Target Audience**
-
-This subsection identifies stakeholders who interact with DESI data acquisition and the technical background required for effective data procurement and validation procedures.
-
-**Primary Audience:** Data engineers, scientific researchers, and infrastructure specialists responsible for DESI data procurement and validation. **Secondary Audience:** System administrators, database engineers, and scientific collaborators who need to understand data acquisition workflows and storage requirements. **Required Background:** Understanding of astronomical data formats (FITS), Python scientific computing, network data transfer, and familiarity with DESI survey data structures.
-
-## **1.4 Overview**
-
-This subsection provides context about DESI data acquisition organization and its relationship to the broader cosmic void analysis project and environmental quenching research.
-
-DESI data acquisition establishes systematic procurement foundation, transforming remote DESI DR1 repositories into local, validated, and accessible scientific datasets that enable environmental quenching analysis, cosmic void research, and reproducible scientific validation through comprehensive automation and data quality assurance.
-
-# 🔗 **2. Dependencies & Relationships**
-
-This section maps how DESI data acquisition integrates with project components and establishes data procurement relationships that enable systematic environmental quenching analysis.
-
-## **2.1 Related Services**
-
-This subsection identifies project components that depend on, utilize, or contribute to DESI data acquisition within the comprehensive scientific analysis framework.
-
-| **Service** | **Relationship Type** | **Integration Points** | **Documentation** |
-|-------------|----------------------|------------------------|-------------------|
-| **Data Pipeline** | **Feeds** | ETL workflows, database ingestion, analysis preparation | [Data Pipeline Design](../../docs/data-pipeline-design.md) |
-| **Database Systems** | **Supplies** | PostgreSQL data loading, schema population, spatial indexing | [Database Schema](../../infrastructure/database/database-schema.md) |
-| **Analysis Framework** | **Enables** | FITS data access, scientific analysis, research validation | [Data Analysis Overview](../data-analysis/README.md) |
-| **Infrastructure Platform** | **Utilizes** | Storage allocation, network connectivity, performance optimization | [Infrastructure Overview](../../infrastructure/README.md) |
-
-## **2.2 Policy Implementation**
-
-This subsection connects DESI data acquisition to project governance and scientific data management requirements.
-
-DESI data acquisition implementation directly supports several critical project objectives:
-
-- **Data Management Policy** - Systematic data procurement and local storage organization for scientific research workflows
-- **Research Reproducibility Policy** - Automated acquisition procedures and validation frameworks for reproducible environmental quenching analysis
-- **Quality Assurance Policy** - Comprehensive data validation and integrity verification for reliable scientific datasets
-- **Infrastructure Optimization Policy** - Network performance optimization and storage efficiency for large-scale astronomical data acquisition
-
-## **2.3 Responsibility Matrix**
-
-This subsection establishes clear accountability for DESI data acquisition activities across different project roles.
-
-| **Activity** | **Data Engineers** | **Scientific Researchers** | **Infrastructure Engineers** | **System Administrators** |
-|--------------|-------------------|----------------------------|------------------------------|---------------------------|
-| **Acquisition Scripts** | **A** | **R** | **C** | **C** |
-| **Data Validation** | **R** | **A** | **C** | **C** |
-| **Storage Management** | **R** | **C** | **R** | **A** |
-| **Performance Optimization** | **R** | **C** | **A** | **R** |
-
-*R: Responsible, A: Accountable, C: Consulted, I: Informed*
-
-# ⚙️ **3. Technical Implementation**
-
-This section provides comprehensive specifications for DESI data acquisition implementation, including automated download scripts, data validation procedures, and storage organization that supports 27.6GB DESI DR1 dataset procurement.
-
-## **3.1 Architecture & Design**
-
-This subsection explains the DESI data acquisition architecture and design decisions that enable systematic scientific data procurement and validation.
-
-DESI data acquisition architecture employs automated Python-based download framework with systematic data validation, local storage organization, and comprehensive quality assurance that supports 27.6GB DESI DR1 dataset procurement. The implementation utilizes optimized network protocols, parallel download capabilities, and systematic validation procedures that ensure data integrity and research reproducibility.
-
-## **3.2 Data Sources and Download Framework**
-
-This subsection describes the systematic organization of DESI data sources and automated download procedures within the environmental quenching analysis framework.
-
-### **Primary Data Sources**
-
-**DESIVAST Void Catalog (1.2GB):**
-
-- **Source URL:** <https://data.desi.lbl.gov/public/dr1/vac/dr1/desivast/v1.0/>
-- **Download Script:** `desivast-download-data-set.py`
-- **File Count:** 8 FITS files covering 4 void-finding algorithms
-- **Algorithm Coverage:** VoidFinder, V2_REVOLVER, V2_VIDE, ZOBOV
-
-**FastSpecFit Galaxy Properties (26.4GB):**
-
-- **Source URL:** <https://data.desi.lbl.gov/public/dr1/vac/dr1/fastspecfit/iron/v3.0/catalogs/>
-- **Download Script:** `fastspecfit-download-data-set.py`
-- **File Count:** 12 HEALPix-organized FITS files (NSIDE=1)
-- **Total Galaxies:** 6,445,927 across all HEALPix pixels
-
-### **Automated Download Scripts**
-
-**DESIVAST Download Implementation:**
-
-```python
-# desivast-download-data-set.py - Automated void catalog acquisition
-🔭 DESIVAST Void Catalog Downloader
-==================================================
-📁 Target directory: data/desivast
-🌐 Source: https://data.desi.lbl.gov/public/dr1/vac/dr1/desivast/v1.0/
-
-Features:
-- Automated file discovery and size validation
-- Progress tracking with real-time statistics
-- Integrity verification and error handling
-- Network optimization for astronomical data transfer
-```
-
-**FastSpecFit Download Implementation:**
-
-```python
-# fastspecfit-download-data-set.py - Galaxy properties acquisition
-🔭 FastSpecFit Galaxy Properties Downloader
-=======================================================
-📁 Target directory: data/fastspecfit
-🌐 Source: https://data.desi.lbl.gov/public/dr1/vac/dr1/fastspecfit/iron/v3.0/catalogs/
-
-Features:
-- HEALPix-aware file organization (NSIDE=1)
-- Large file handling with progress monitoring
-- Bandwidth optimization and retry mechanisms
-- Storage space validation and cleanup procedures
-```
-
-## **3.3 Storage Organization and Access Management**
-
-This subsection provides systematic specifications for local storage organization and developer access management that supports collaborative cosmic void analysis.
-
-### **Local Storage Structure**
-
-**Data Directory Organization:**
-
-```bash
-/mnt/data/desi-cosmic-void-galaxies/
-├── desivast/
-│   ├── data/desivast/          # 1.2GB void catalogs
-│   └── desivast-download-data-set.py
-├── fastspecfit-galaxy-properties/
-│   ├── data/fastspecfit/       # 26.4GB galaxy properties
-│   └── fastspecfit-download-data-set.py
-└── [analysis-workspace]/      # Future analysis directories
-```
-
-**Developer Access Configuration:**
-
-```bash
-# System administration procedures (implemented)
-groupadd developers
-usermod -aG developers crainbramp
-chown -R :developers /mnt/data/desi-cosmic-void-galaxies
-chmod -R 770 /mnt/data/desi-cosmic-void-galaxies
-chmod g+s /mnt/data/desi-cosmic-void-galaxies
-```
-
-### **Performance Optimization**
-
-**Network Performance Results:**
-
-- **Download Speeds:** 10.7 - 43.6 MB/s (observed performance)
-- **DESIVAST Acquisition:** 8 files, 1.2GB in ~77 seconds total
-- **FastSpecFit Acquisition:** 12 files, 26.4GB in ~1,560 seconds total
-- **Storage Efficiency:** Direct download to target directories with validation
-
-## **3.4 Data Validation and Quality Assurance**
-
-This subsection outlines systematic data validation procedures and quality assurance frameworks that ensure reliable scientific dataset procurement.
-
-### **Validation Framework**
-
-**Download Integrity Verification:**
-
-- **File Size Validation:** Automatic comparison with remote file sizes
-- **Download Completion:** Progress tracking and completion verification
-- **Error Handling:** Retry mechanisms and failure recovery procedures
-- **Storage Validation:** Available space checking and allocation verification
-
-**Data Quality Assessment:**
-
-- **FITS Structure Validation:** Header and HDU organization verification
-- **Content Integrity:** Row counts and column structure validation
-- **Cross-File Consistency:** Algorithm-specific data format verification
-- **Scientific Validity:** Coordinate range and measurement quality checks
-
-# 🛠️ **4. Management & Operations**
-
-This section covers operational procedures and management approaches for DESI data acquisition within the cosmic void analysis project.
-
-## **4.1 Lifecycle Management**
-
-This subsection documents management approaches throughout the DESI data acquisition operational lifecycle.
-
-Data acquisition lifecycle management encompasses systematic planning for 27.6GB dataset procurement, automated download execution and monitoring, ongoing validation and quality assurance, and systematic data organization evolution based on scientific analysis requirements and research collaboration needs for continued data accessibility and research effectiveness.
-
-## **4.2 Monitoring & Quality Assurance**
-
-This subsection defines monitoring strategies and quality approaches for DESI data acquisition operations.
-
-Acquisition monitoring includes comprehensive download performance tracking, data validation and integrity verification, storage utilization monitoring, and systematic quality assurance procedures to ensure reliable data procurement, accurate dataset organization, and effective support for environmental quenching analysis workflows.
-
-## **4.3 Maintenance and Optimization**
-
-This subsection outlines systematic maintenance and optimization approaches for DESI data acquisition.
-
-Acquisition maintenance encompasses automated script updates and enhancement, network performance optimization, storage organization and access management, and systematic improvement of download procedures based on operational feedback and scientific analysis requirements to ensure continued efficiency for cosmic void research activities.
-
-# 🔍 **5. Security & Compliance**
-
-This section documents security controls and compliance alignment for DESI data acquisition within the cosmic void analysis project.
-
-## **5.1 Security Controls**
-
-This subsection documents specific security measures and verification methods for DESI data acquisition.
-
-DESI data acquisition security implementation includes systematic access controls for downloaded data, network security validation for remote data access, developer group permissions management, and comprehensive security monitoring aligned with scientific computing security requirements and research data protection standards.
-
-**Compliance Disclaimer**: We are not security professionals - this represents our baseline security implementation and we are working towards full compliance with established frameworks.
-
-## **5.2 CIS Controls Mapping**
-
-This subsection provides explicit mapping to CIS Controls v8, documenting compliance status and implementation evidence.
-
-| **CIS Control** | **Implementation Status** | **Evidence Location** | **Assessment Date** |
-|-----------------|--------------------------|----------------------|-------------------|
-| **CIS.3.1** | **Planned** | Data protection during acquisition and local storage | **TBD** |
-| **CIS.5.1** | **Compliant** | Developer group access control and permission management | **2025-07-02** |
-| **CIS.8.1** | **Planned** | Download activity logging and acquisition audit trails | **TBD** |
-
-## **5.3 Framework Compliance**
-
-This subsection demonstrates how DESI data acquisition security controls satisfy requirements across multiple compliance frameworks.
-
-DESI data acquisition security aligns with CIS Controls v8 baseline, NIST cybersecurity framework, and scientific computing security best practices through systematic implementation of access controls, secure data transfer, and comprehensive validation procedures appropriate for astronomical data acquisition and research environments.
-
-# 📚 **7. References & Related Resources**
-
-This section provides comprehensive links to related documentation and supporting resources for DESI data acquisition.
-
-## **7.1 Internal References**
-
-| **Document Type** | **Document Title** | **Relationship** | **Link** |
-|-------------------|-------------------|------------------|----------|
-| **Project** | Project README | Overall project context and data requirements | [../../README.md](../../README.md) |
-| **Pipeline** | Data Pipeline Design | ETL workflows and data processing procedures | [../../docs/data-pipeline-design.md](../../docs/data-pipeline-design.md) |
-| **Database** | Database Schema | Data storage and organization requirements | [../../infrastructure/database/database-schema.md](../../infrastructure/database/database-schema.md) |
-| **Procedures** | Data Download Procedures | Detailed acquisition procedures and validation | [data-download-procedures.md](data-download-procedures.md) |
-| **Analysis** | Data Analysis Overview | FITS inspection and validation procedures | [../data-analysis/README.md](../data-analysis/README.md) |
-
-## **7.2 External Standards**
-
-- **[DESI Data Release Documentation](https://data.desi.lbl.gov/doc/)** - Official DESI data access procedures and catalog specifications
-- **[DESIVAST Void Catalogs](https://www.osti.gov/scitech/biblio/2477002)** - Void identification algorithms and catalog documentation
-- **[FastSpecFit Documentation](https://fastspecfit.readthedocs.io/)** - Galaxy properties catalog structure and measurement procedures
-- **[FITS Standard](https://fits.gsfc.nasa.gov/)** - Flexible Image Transport System specification for astronomical data
-- **[Python Astronomy Libraries](https://www.astropy.org/)** - Scientific computing frameworks for astronomical data handling
-
-# ✅ **8. Approval & Review**
-
-This section documents the formal review and approval process for DESI data acquisition documentation.
-
-## **8.1 Review Process**
-
-DESI data acquisition documentation review follows systematic validation of technical accuracy, operational effectiveness, and scientific data management alignment to ensure reliable dataset procurement and research support.
-
-## **8.2 Approval Matrix**
-
-| **Reviewer** | **Role/Expertise** | **Review Date** | **Approval Status** | **Comments** |
-|-------------|-------------------|----------------|-------------------|--------------|
-| [Data Engineer] | Data acquisition and automation procedures | 2025-07-02 | **Approved** | Acquisition framework provides comprehensive dataset procurement capabilities |
-| [Scientific Researcher] | DESI data requirements and validation procedures | 2025-07-02 | **Approved** | Data acquisition supports systematic environmental quenching analysis |
-
-# 📜 **9. Documentation Metadata**
-
-This section provides comprehensive information about DESI data acquisition documentation creation and maintenance.
-
-## **9.1 Change Log**
-
-| **Version** | **Date** | **Changes** | **Author** | **Review Status** |
-|------------|---------|-------------|------------|------------------|
-| 1.0 | 2025-07-02 | Initial DESI data acquisition overview with automated download framework | VintageDon | **Approved** |
-
-## **9.2 Authorization & Review**
-
-DESI data acquisition documentation reflects comprehensive technical implementation validated through expert review and operational consultation for cosmic void analysis data procurement requirements.
-
-## **9.3 Authorship Details**
-
-**Human Author:** VintageDon (Project Lead and Data Engineering Specialist)  
-**AI Contributor:** Anthropic Claude 4 Sonnet (claude-4-sonnet-20250514)  
-**Collaboration Method:** Request-Analyze-Verify-Generate-Validate (RAVGV)  
-**Human Oversight:** Complete data acquisition framework review and validation of technical implementation accuracy
-
-## **9.4 AI Collaboration Disclosure**
-
-This document was collaboratively developed to establish comprehensive DESI data acquisition framework that enables systematic dataset procurement and reliable cosmic void research through automated download procedures and validation.
+The pipeline handles two primary data streams: the DESI FastSpecFit "Iron" galaxy properties catalog containing stellar masses and star formation rates, and the DESIVAST cosmic void catalogs that define the large-scale environmental context. Both data streams undergo careful validation and transformation before being loaded into the normalized database schema that supports the project's scientific objectives.
 
 ---
 
-**🤖 AI Collaboration Disclosure**
+## **📂 Directory Contents**
 
-This document was collaboratively developed using the Request-Analyze-Verify-Generate-Validate (RAVGV) methodology. The DESI data acquisition documentation reflects systematic technical implementation development informed by astronomical data management best practices and environmental quenching research requirements. All content has been thoroughly reviewed, validated, and approved by qualified human subject matter experts. The human author retains complete responsibility for technical accuracy and data acquisition effectiveness.
+This section provides systematic navigation to all ETL pipeline components and ingestion tools.
 
-*Generated: 2025-07-02 | Human Author: VintageDon | AI Assistant: Claude 4 Sonnet | Review Status: Approved | Document Version: 1.0*
+### **Primary ETL Scripts**
+
+| **Script** | **Purpose** | **Data Source** |
+|------------|-------------|----------------|
+| **[etl-ingest-fastspecfit-to-postgesql.py](etl-ingest-fastspecfit-to-postgesql.py)** | High-performance ingestion of DESI FastSpecFit "Iron" galaxy properties catalog | FastSpecFit VAC (FITS multi-file) |
+| **[etl-ingest-desivast-to-postgesql.py](etl-ingest-desivast-to-postgesql.py)** | Bulk loading of DESIVAST cosmic void catalogs and galaxy membership data | DESIVAST DR1 VAC (FITS) |
+
+### **Supporting Infrastructure**
+
+| **Component** | **Purpose** | **Integration** |
+|---------------|-------------|----------------|
+| **Configuration Management** | Database credentials and file path management | config.ini integration |
+| **Error Handling** | Robust transaction management and rollback capabilities | PostgreSQL transaction integrity |
+| **Performance Optimization** | In-memory buffer streaming and bulk loading | StringIO + COPY FROM methodology |
+
+---
+
+## **📁 Repository Structure**
+
+``` markdown
+data-acquisition/
+├── 🗄️ etl-ingest-fastspecfit-to-postgesql.py    # FastSpecFit VAC ingestion pipeline
+├── 🌌 etl-ingest-desivast-to-postgesql.py       # DESIVAST void catalog ingestion
+├── 📋 README.md                                 # This file
+└── 📄 [config integration files]               # Configuration and schema references
+```
+
+### **Pipeline Navigation:**
+
+- **[🗄️ FastSpecFit Ingestion](etl-ingest-fastspecfit-to-postgesql.py)** - Galaxy properties catalog processing with multi-HDU FITS handling
+- **[🌌 DESIVAST Ingestion](etl-ingest-desivast-to-postgesql.py)** - Cosmic void catalog and membership table population
+- **[📋 Configuration](../config/)** - Database connection parameters and file path management
+
+---
+
+## **🔗 Related Categories**
+
+This section establishes relationships within the project knowledge graph, connecting data acquisition to downstream analysis components.
+
+| **Category** | **Relationship** | **Documentation** |
+|--------------|------------------|-------------------|
+| **[Data Analysis](../data-analysis/README.md)** | Provides analysis-ready database tables for spatial cross-matching and statistical comparisons | [../data-analysis/README.md](../data-analysis/README.md) |
+| **[Dataset Validations](../dataset-validations/README.md)** | Supports validation procedures with clean, indexed database tables for integrity checking | [../dataset-validations/README.md](../dataset-validations/README.md) |
+| **[Configuration](../config/)** | Depends on database schema definitions and connection parameters | [../config/README.md](../config/README.md) |
+| **[Source Root](../README.md)** | Core component of the overall source code architecture | [../README.md](../README.md) |
+
+---
+
+## **Getting Started**
+
+For new contributors approaching the data acquisition pipeline:
+
+1. **Start Here:** Review the configuration setup and database schema requirements in [../config/](../config/)
+2. **FastSpecFit Pipeline:** Begin with [etl-ingest-fastspecfit-to-postgesql.py](etl-ingest-fastspecfit-to-postgesql.py) for galaxy properties ingestion
+3. **DESIVAST Pipeline:** Follow with [etl-ingest-desivast-to-postgesql.py](etl-ingest-desivast-to-postgesql.py) for void catalog processing
+4. **Validation:** Proceed to [../dataset-validations/](../dataset-validations/) for data integrity verification
+
+---
+
+## **🚀 Technical Architecture**
+
+### **High-Performance Ingestion Strategy**
+
+The data acquisition pipeline implements a sophisticated bulk loading strategy that transforms the traditional bottleneck of database ingestion into a streamlined, high-throughput operation:
+
+**PostgreSQL COPY FROM Optimization:**
+
+- **In-Memory Buffer Streaming**: Utilizes `io.StringIO` to avoid temporary disk files while maintaining memory efficiency
+- **Bulk Transaction Processing**: Groups operations to minimize transaction overhead and maximize throughput
+- **Direct psycopg2 Integration**: Leverages low-level database drivers for optimal performance during bulk operations
+
+**Multi-File Processing Architecture:**
+
+- **Iterative FITS Handling**: Processes distributed HEALPix files sequentially to manage memory constraints
+- **Memory-Mapped File Access**: Uses `astropy.io.fits` memory mapping to handle large files efficiently
+- **Automated Column Mapping**: Dynamically handles FITS data type conversions to PostgreSQL schema
+
+**Error Recovery and Robustness:**
+
+- **Transaction Integrity**: Implements commit/rollback logic to ensure data consistency
+- **Corrupted File Handling**: Graceful error recovery for damaged or incomplete FITS files
+- **Progress Monitoring**: Comprehensive logging and status reporting throughout ingestion process
+
+### **Performance Characteristics**
+
+Based on industry benchmarks and astronomical data processing patterns:
+
+**Expected Throughput:**
+
+- **FastSpecFit Catalog**: ~13.1M galaxies processed in 15-30 minutes depending on hardware
+- **DESIVAST Catalogs**: Void definitions and membership tables completed in 2-5 minutes
+- **Performance Scaling**: 10-800x improvement over traditional pandas.to_sql() methods
+
+**Resource Requirements:**
+
+- **Memory Usage**: Peak consumption determined by largest single FITS file (~2-4 GB)
+- **Disk I/O**: Minimized through streaming approach and memory-mapped file access
+- **Network Overhead**: Optimized for local PostgreSQL connections with bulk operations
+
+### **Data Flow Architecture**
+
+The pipeline implements a systematic data transformation workflow:
+
+```mermaid
+graph TD
+    A[FITS Source Files] --> B[Astropy FITS Reader]
+    B --> C[Pandas DataFrame Transformation]
+    C --> D[StringIO Buffer]
+    D --> E[PostgreSQL COPY FROM]
+    E --> F[Indexed Database Tables]
+    
+    G[Error Handling] --> B
+    G --> C
+    G --> E
+    
+    H[Configuration Management] --> B
+    H --> E
+    
+    style A fill:#e1f5fe
+    style F fill:#e8f5e8
+    style G fill:#fff3e0
+    style H fill:#f3e5f5
+```
+
+---
+
+## **🛠️ Implementation Details**
+
+### **FastSpecFit Pipeline Specifications**
+
+The FastSpecFit ingestion script handles the complex multi-HDU structure of the DESI galaxy properties catalog:
+
+**FITS File Processing:**
+
+- **Multi-HDU Integration**: Combines METADATA, SPECPHOT, and FASTSPEC extensions into unified galaxy records
+- **HEALPix Organization**: Processes distributed files maintaining spatial coherence
+- **Column Selection**: Extracts scientifically relevant parameters while managing storage efficiency
+
+**Data Transformation Features:**
+
+- **Error Calculation**: Computes standard errors from inverse variance columns where appropriate
+- **Type Optimization**: Maps FITS data types to optimal PostgreSQL representations
+- **Null Handling**: Systematic treatment of missing or invalid astronomical measurements
+
+### **DESIVAST Pipeline Specifications**
+
+The DESIVAST ingestion script processes cosmic void catalogs with their associated galaxy membership information:
+
+**Void Catalog Processing:**
+
+- **Multi-Algorithm Support**: Handles VoidFinder, V2/REVOLVER, and V2/VIDE void definitions
+- **Spatial Metadata**: Preserves void center coordinates, effective radii, and geometric properties
+- **Membership Relations**: Establishes foreign key relationships between voids and member galaxies
+
+**Systematic Treatment:**
+
+- **Algorithm Provenance**: Maintains clear identification of void-finding methodology
+- **Coordinate Systems**: Handles celestial coordinate transformations and distance calculations
+- **Quality Flags**: Preserves data quality indicators for downstream analysis filtering
+
+### **Configuration Integration**
+
+Both pipelines implement consistent configuration management:
+
+**Database Connection Management:**
+
+- **Credential Security**: External configuration file management for sensitive parameters
+- **Connection Pooling**: Efficient database resource utilization during bulk operations
+- **Transaction Configuration**: Optimized settings for large-scale data ingestion
+
+**File Path Management:**
+
+- **Flexible Source Directories**: Configurable data source locations for different environments
+- **Automatic File Discovery**: Pattern-based FITS file identification and processing
+- **Progress Tracking**: Comprehensive logging of processing status and completion metrics
+
+---
+
+## **Document Information**
+
+| **Field** | **Value** |
+|-----------|-----------|
+| **Author** | VintageDon - <https://github.com/vintagedon> |
+| **Created** | 2025-08-04 |
+| **Last Updated** | 2025-08-04 |
+| **Version** | 1.0 |
+
+---
+Tags: etl-pipeline, postgresql-ingestion, fits-processing, bulk-loading, astronomical-data, survey-catalogs
