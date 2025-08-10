@@ -23,6 +23,35 @@ related_documents:
 
 Comprehensive physical plausibility validation and systematic bias detection for the DESI DR1 cosmic void galaxy analysis dataset. This validation ensures that galaxy properties and void catalogs describe a physically plausible universe and are free from systematic biases that would invalidate scientific analysis.
 
+## 📖 **Key Terminology & Concepts**
+
+Before diving into the validation results, here are the essential terms and concepts for understanding this analysis:
+
+### **Astronomical Quantities**
+
+- **M☉** - Solar masses, the standard unit for measuring stellar and galaxy masses (1 M☉ = mass of our Sun)
+- **Mpc/h** - Megaparsecs per h, a distance unit accounting for cosmological parameters (~3.26 million light-years)
+- **Redshift (z)** - How much light is stretched due to cosmic expansion; higher z = more distant/older objects
+- **SFR** - Star Formation Rate, typically measured in solar masses of new stars formed per year
+- **sSFR** - Specific Star Formation Rate (SFR divided by stellar mass), indicating how actively a galaxy forms stars
+- **D4000** - A spectral feature indicating galaxy age; higher values = older stellar populations
+
+### **Cosmic Structure**
+
+- **Cosmic Voids** - Vast empty regions in the universe, containing very few galaxies
+- **Galaxy Environment** - Where a galaxy lives affects its evolution (dense clusters vs empty voids)
+- **Scaling Relations** - Predictable relationships between galaxy properties (like mass vs star formation)
+- **Environmental Quenching** - Process where cosmic environment shuts down star formation
+
+### **Survey & Data Concepts**
+
+- **DESI** - Dark Energy Spectroscopic Instrument, measuring millions of galaxy spectra
+- **FastSpecFit** - Analysis pipeline that extracts physical properties from galaxy spectra
+- **DESIVAST** - DESI Void Analysis Spectroscopic Toolkit for finding cosmic voids
+- **Malmquist Bias** - Selection effect where more distant objects appear brighter/more massive
+- **Quality Cuts** - Filters removing unreliable measurements to ensure data accuracy
+- **Systematic Bias** - Consistent errors that could skew scientific conclusions
+
 ## **Overview**
 
 Phase 2 validation represents the critical transition from database integrity verification to scientific data quality assessment. This validation phase specifically targets the systematic issues documented in FastSpecFit development history (v1.0 redshift-dependent mass bias, v2.0 mass scale bias) and addresses the "dominant systematic uncertainty" of algorithm-dependent void definitions in cosmic void science.
@@ -35,65 +64,26 @@ The validation process applies sophisticated statistical analysis and publicatio
 
 This section provides systematic access to all Phase 2 validation outputs and diagnostic materials.
 
+### **Validation Outputs**
+
+| **File** | **Purpose** |
+|----------|-------------|
+| **[phase-2-validation-summary.md](phase-2-validation-summary.md)** | Comprehensive validation results and scientific certification |
+| **[Validation Script](../../src/dataset-validations/validate_stage2_physical_plausibility.py)** | Fully commented source code for reproducible validation |
+
 ### **Validation Plots**
 
 | **Plot** | **Purpose** | **Scientific Significance** |
 |----------|-------------|------------------------------|
-| **[mass_vs_redshift_critical.png](mass_vs_redshift_critical.png)** | Test for FastSpecFit v1.0 systematic bias | **CRITICAL**: Direct test for artificial redshift-dependent stellar mass bias |
-| **[redshift_distribution.png](redshift_distribution.png)** | Survey redshift coverage assessment | Validates DESI DR1 Bright Galaxy Survey selection function |
-| **[sfr_distribution.png](sfr_distribution.png)** | Star formation rate distribution analysis | Identifies bimodal star-forming vs quenched galaxy populations |
-| **[sfr_mass_main_sequence.png](sfr_mass_main_sequence.png)** | Star formation main sequence validation | **CORE**: Fundamental scaling relation for galaxy evolution science |
-| **[ssfr_vs_mass_quenching.png](ssfr_vs_mass_quenching.png)** | Specific star formation rate diagnostic | **QUENCHING ANALYSIS**: Direct diagnostic for environmental quenching |
-| **[stellar_mass_distribution.png](stellar_mass_distribution.png)** | Stellar mass distribution validation | Tests for FastSpecFit v2.0 mass scale systematic bias |
-| **[void_galactic_cap_distribution.png](void_galactic_cap_distribution.png)** | NGC/SGC void coverage analysis | Systematic check for galactic cap selection biases |
-| **[void_size_distributions.png](void_size_distributions.png)** | Algorithm-dependent void size comparison | **SYSTEMATIC**: Tests "dominant uncertainty" in void science |
-| **[void_spatial_distribution.png](void_spatial_distribution.png)** | Void spatial distribution by algorithm | Detects spatial clustering biases in void-finding methods |
-
-### **Validation Documentation**
-
-| **Document** | **Purpose** | **Link** |
-|--------------|-------------|----------|
-| **[phase-2-validation-summary.md](phase-2-validation-summary.md)** | Comprehensive validation results summary | Quantitative assessment and scientific interpretation |
-
----
-
-## **📁 Validation Results Structure**
-
-```
-phase-2-physical-plausibility/
-├── 📊 Distribution Diagnostics/
-│   ├── stellar_mass_distribution.png    # Mass distribution validation
-│   ├── sfr_distribution.png            # SFR bimodality assessment
-│   └── redshift_distribution.png       # Survey selection verification
-├── 📈 Scaling Relations/
-│   ├── mass_vs_redshift_critical.png   # CRITICAL: Systematic bias test
-│   ├── sfr_mass_main_sequence.png      # Fundamental scaling relation
-│   └── ssfr_vs_mass_quenching.png      # Quenching diagnostic
-├── 🌌 Void Systematics/
-│   ├── void_size_distributions.png     # Algorithm comparison
-│   ├── void_spatial_distribution.png   # Spatial bias detection
-│   └── void_galactic_cap_distribution.png # Coverage analysis
-└── 📋 Documentation/
-    └── phase-2-validation-summary.md   # Comprehensive results
-```
-
-### **Navigation Guide:**
-
-- **[📊 Distribution Diagnostics](#distribution-diagnostics)** - Galaxy property distributions and range validation
-- **[📈 Scaling Relations](#scaling-relations)** - Fundamental astrophysical relationships and systematic bias tests
-- **[🌌 Void Systematics](#void-systematics)** - Cross-algorithm void analysis and systematic uncertainty assessment
-
----
-
-## **🔗 Related Categories**
-
-This section establishes the validation framework relationships within the broader project ecosystem.
-
-| **Category** | **Relationship** | **Documentation** |
-|--------------|------------------|-------------------|
-| **[Phase 1 Database Integrity](../phase-1-data-integrity/README.md)** | Prerequisite validation ensuring database structural soundness | [../phase-1-data-integrity/README.md](../phase-1-data-integrity/README.md) |
-| **[Documentation Framework](../../documentation-standards/README.md)** | Validation methodology and template framework | [../../documentation-standards/README.md](../../documentation-standards/README.md) |
-| **[Infrastructure Overview](../../infrastructure/README.md)** | PostgreSQL database architecture and ETL pipeline documentation | [../../infrastructure/README.md](../../infrastructure/README.md) |
+| **[mass_vs_redshift_critical.png](../../assets/plots/stage-2-validation-plots/mass_vs_redshift_critical.png)** | Test for FastSpecFit v1.0 systematic bias | **CRITICAL**: Direct test for artificial redshift-dependent stellar mass bias |
+| **[redshift_distribution.png](../../assets/plots/stage-2-validation-plots/redshift_distribution.png)** | Survey redshift coverage assessment | Validates DESI DR1 Bright Galaxy Survey selection function |
+| **[sfr_distribution.png](../../assets/plots/stage-2-validation-plots/sfr_distribution.png)** | Star formation rate distribution analysis | Identifies bimodal star-forming vs quenched galaxy populations |
+| **[sfr_mass_main_sequence.png](../../assets/plots/stage-2-validation-plots/sfr_mass_main_sequence.png)** | Star formation main sequence validation | **CORE**: Fundamental scaling relation for galaxy evolution science |
+| **[ssfr_vs_mass_quenching.png](../../assets/plots/stage-2-validation-plots/ssfr_vs_mass_quenching.png)** | Specific star formation rate diagnostic | **QUENCHING ANALYSIS**: Direct diagnostic for environmental quenching |
+| **[stellar_mass_distribution.png](../../assets/plots/stage-2-validation-plots/stellar_mass_distribution.png)** | Stellar mass distribution validation | Tests for FastSpecFit v2.0 mass scale systematic bias |
+| **[void_galactic_cap_distribution.png](../../assets/plots/stage-2-validation-plots/void_galactic_cap_distribution.png)** | NGC/SGC void coverage analysis | Systematic check for galactic cap selection biases |
+| **[void_size_distributions.png](../../assets/plots/stage-2-validation-plots/void_size_distributions.png)** | Algorithm-dependent void size comparison | **SYSTEMATIC**: Tests "dominant uncertainty" in void science |
+| **[void_spatial_distribution.png](../../assets/plots/stage-2-validation-plots/void_spatial_distribution.png)** | Void spatial distribution by algorithm | Detects spatial clustering biases in void-finding methods |
 
 ---
 
@@ -101,7 +91,9 @@ This section establishes the validation framework relationships within the broad
 
 ### **Stellar Mass Distribution**
 
-![stellar_mass_distributionge-2-validation-plots/stellar_mass_distribution.png)
+![Stellar Mass Distribution](../../assets/plots/stage-2-validation-plots/stellar_mass_distribution.png)
+
+**🧑‍🎓 For the Layperson**: This plot shows how many galaxies we have at different masses, from lightweight galaxies (like dwarf galaxies) to cosmic giants. Think of it like a census counting people by weight - we want to make sure our sample includes the right mix of "lightweight" and "heavyweight" galaxies to represent the real universe.
 
 **Scientific Purpose**: Validates the stellar mass distribution for 6.34 million galaxies, testing for the systematic mass scale bias documented in FastSpecFit v2.0.
 
@@ -111,11 +103,11 @@ This section establishes the validation framework relationships within the broad
 - **Distribution Shape**: Log-normal distribution centered at ~10.3 log(M☉)
 - **Quality Assessment**: ✅ **PASS** - No evidence of v2.0 systematic mass overestimation
 
-**Scientific Interpretation**: The distribution shows expected characteristics for a magnitude-limited galaxy survey, with appropriate representation across the full stellar mass range. No artificial peaks or systematic offsets detected.
-
 ### **Star Formation Rate Distribution**
 
-![sfr_distribution](../../assets/plots/stage-2-validation-plots/sfr_distribution.png)
+![SFR Distribution](../../assets/plots/stage-2-validation-plots/sfr_distribution.png)
+
+**🧑‍🎓 For the Layperson**: This shows how actively galaxies are making new stars. Some galaxies are "star formation factories" churning out lots of new stars, while others have essentially "retired" and stopped making stars. The two distinct groups (bimodal distribution) tell us about different phases in galaxy life cycles.
 
 **Scientific Purpose**: Analyzes the star formation rate distribution to identify the bimodal population structure critical for quenching science.
 
@@ -125,11 +117,11 @@ This section establishes the validation framework relationships within the broad
 - **Bimodality**: Clear separation between star-forming and quenched populations
 - **Quality Assessment**: ✅ **PASS** - No negative SFR values, expected distribution shape
 
-**Scientific Interpretation**: The distribution reveals the expected bimodal structure with a dominant star-forming population and a distinct quenched population, essential for environmental quenching analysis.
-
 ### **Redshift Distribution**
 
 ![Redshift Distribution](../../assets/plots/stage-2-validation-plots/redshift_distribution.png)
+
+**🧑‍🎓 For the Layperson**: This shows how far away (and therefore how far back in time) our galaxies are. Higher redshift means more distant and older. It's like having a time machine that lets us see galaxies at different ages of the universe - we want good coverage across cosmic time to understand galaxy evolution.
 
 **Scientific Purpose**: Validates the redshift coverage and selection function of the DESI DR1 Bright Galaxy Survey.
 
@@ -139,15 +131,15 @@ This section establishes the validation framework relationships within the broad
 - **Peak Distribution**: Concentrated at z ~ 0.1-0.3 (survey sweet spot)
 - **Quality Assessment**: ✅ **PASS** - Expected magnitude-limited survey characteristics
 
-**Scientific Interpretation**: The distribution shows the characteristic shape of a magnitude-limited survey with appropriate coverage for cosmic void analysis at intermediate redshifts.
-
 ---
 
 ## **📈 Scaling Relations**
 
 ### **Mass vs Redshift - Critical Systematic Test**
 
-![mass_vs_redshift_critical](../../assets/plots/stage-2-validation-plots/mass_vs_redshift_critical.png)
+![Mass vs Redshift Critical](../../assets/plots/stage-2-validation-plots/mass_vs_redshift_critical.png)
+
+**🧑‍🎓 For the Layperson**: This is like checking if our "cosmic scale" is working correctly. We're making sure that when we measure galaxy masses at different distances, we're not accidentally making systematic errors. The correlation we see here is actually expected - it's like only being able to see the brightest lighthouses when you're far from shore.
 
 **Scientific Purpose**: **CRITICAL DIAGNOSTIC** - Direct test for the FastSpecFit v1.0 systematic bias where stellar masses were artificially dependent on redshift.
 
@@ -157,19 +149,13 @@ This section establishes the validation framework relationships within the broad
 - **Statistical Assessment**: Strong correlation detected
 - **Scientific Interpretation**: ⚠️ **Survey Selection** - Correlation consistent with Malmquist bias, not systematic error
 
-**Detailed Analysis**:
-The strong mass-redshift correlation (r=0.614) was initially flagged as a potential systematic bias. However, detailed investigation revealed this correlation represents **legitimate survey selection effects** (Malmquist bias):
-
-- **z < 0.1**: Mean mass = 9.37 log(M☉) (includes low-mass nearby galaxies)
-- **0.1 ≤ z < 0.3**: Mean mass = 10.31 log(M☉) (survey sweet spot)
-- **0.3 ≤ z < 0.6**: Mean mass = 10.81 log(M☉) (only brighter galaxies detected)
-- **z ≥ 0.6**: Mean mass = 10.73 log(M☉) (high-redshift bright objects)
-
-**Scientific Conclusion**: ✅ **PASS** - Correlation represents expected astrophysical selection effects, not FastSpecFit v1.0 systematic bias.
+**Detailed Analysis**: The strong correlation represents **legitimate survey selection effects** (Malmquist bias), not measurement errors.
 
 ### **Star Formation Main Sequence**
 
-![sfr_mass_main_sequence](../../assets/plots/stage-2-validation-plots/sfr_mass_main_sequence.png)
+![SFR Mass Main Sequence](../../assets/plots/stage-2-validation-plots/sfr_mass_main_sequence.png)
+
+**🧑‍🎓 For the Layperson**: This shows one of the most fundamental relationships in the galaxy universe - bigger galaxies tend to make stars faster. It's like finding that larger factories tend to produce more products. This relationship is so fundamental that if it looked wrong, we'd know something was seriously broken with our measurements.
 
 **Scientific Purpose**: Validates the fundamental star formation main sequence scaling relation essential for galaxy evolution science.
 
@@ -179,11 +165,11 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - **Scatter**: Appropriate for spectroscopic survey data
 - **Quality Assessment**: ✅ **PASS** - Excellent agreement with literature expectations
 
-**Scientific Interpretation**: The main sequence shows the expected tight correlation between stellar mass and star formation rate for star-forming galaxies, with appropriate scatter and slope consistent with DESI data quality.
-
 ### **Specific Star Formation Rate vs Mass**
 
-![ssfr_vs_mass_quenching](../../assets/plots/stage-2-validation-plots/ssfr_vs_mass_quenching.png)
+![sSFR vs Mass Quenching](../../assets/plots/stage-2-validation-plots/ssfr_vs_mass_quenching.png)
+
+**🧑‍🎓 For the Layperson**: This plot is crucial for our research question about cosmic voids. It shows how "efficiently" galaxies make stars relative to their size. Think of it as "star formation per pound" - some galaxies are very efficient star factories, others have slowed down or stopped. The clear separation helps us identify which galaxies have been "quenched" (stopped forming stars).
 
 **Scientific Purpose**: **PRIMARY QUENCHING DIAGNOSTIC** - Displays the specific star formation rate distribution that directly enables environmental quenching analysis.
 
@@ -193,15 +179,15 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - **Quenched Fraction**: 72.2% of galaxies below threshold
 - **Mass Dependence**: Clear trend of increasing quenched fraction with stellar mass
 
-**Scientific Interpretation**: This plot provides the fundamental diagnostic for cosmic void quenching analysis, showing the clear bimodal structure necessary for environmental quenching studies.
-
 ---
 
 ## **🌌 Void Systematics**
 
 ### **Void Size Distributions by Algorithm**
 
-![void_size_distributions](../../assets/plots/stage-2-validation-plots/void_size_distributions.png)
+![Void Size Distributions](../../assets/plots/stage-2-validation-plots/void_size_distributions.png)
+
+**🧑‍🎓 For the Layperson**: Different computer algorithms find cosmic voids in slightly different ways, like different people might draw city boundaries differently on a map. This plot shows us how much the void sizes vary depending on which "void-finding algorithm" we use. We need to understand these differences to make sure our scientific conclusions are robust.
 
 **Scientific Purpose**: **SYSTEMATIC UNCERTAINTY ANALYSIS** - Addresses the "dominant systematic uncertainty" in void science by comparing void size distributions across different algorithms.
 
@@ -212,11 +198,11 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - **VoidFinder**: 3,765 voids, mean radius 12.6 Mpc/h
 - **ZOBOV**: 3,517 voids, mean radius 13.7 Mpc/h
 
-**Scientific Interpretation**: ✅ **PASS** - Reasonable variation between algorithms (count ratio 2.5×, size ratio 1.4×) confirms that void definitions are algorithm-dependent but within acceptable systematic uncertainty bounds.
-
 ### **Void Spatial Distribution**
 
 ![Void Spatial Distribution](../../assets/plots/stage-2-validation-plots/void_spatial_distribution.png)
+
+**🧑‍🎓 For the Layperson**: This is like checking that our cosmic voids are spread evenly across the sky, not clustered in one region due to measurement problems. Think of it as making sure our sample of "empty spaces" in the universe is representative of the whole sky, not biased toward one particular direction.
 
 **Scientific Purpose**: Detects potential spatial clustering biases or systematic selection effects in void-finding algorithms across the survey footprint.
 
@@ -226,11 +212,11 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - **Algorithm Consistency**: No obvious spatial clustering biases
 - **Survey Footprint**: Appropriate coverage for cosmic void analysis
 
-**Scientific Interpretation**: ✅ **PASS** - No evidence of spatial systematic biases that would compromise void-galaxy cross-matching analysis.
-
 ### **Void Galactic Cap Distribution**
 
 ![Void Galactic Cap Distribution](../../assets/plots/stage-2-validation-plots/void_galactic_cap_distribution.png)
+
+**🧑‍🎓 For the Layperson**: Earth's galaxy (the Milky Way) blocks our view of part of the universe, so astronomers observe in two main directions - "north" and "south" of our galaxy. This plot makes sure we have balanced coverage in both directions, like ensuring a political poll samples equally from different regions to avoid bias.
 
 **Scientific Purpose**: Validates balanced coverage between Northern Galactic Cap (NGC) and Southern Galactic Cap (SGC) to ensure representative cosmic void sampling.
 
@@ -239,8 +225,6 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - **NGC Coverage**: Appropriate representation
 - **SGC Coverage**: Balanced with NGC
 - **Algorithm Consistency**: Uniform coverage across caps
-
-**Scientific Interpretation**: ✅ **PASS** - Balanced galactic cap coverage ensures representative cosmic void sampling without systematic selection biases.
 
 ---
 
@@ -269,19 +253,7 @@ The strong mass-redshift correlation (r=0.614) was initially flagged as a potent
 - ✅ **Spatial Coverage**: No significant spatial selection biases
 - ✅ **Survey Representation**: Balanced NGC/SGC coverage
 
-**Scientific Conclusion:**
-The DESI DR1 cosmic void galaxy analysis dataset has passed comprehensive physical plausibility validation. The data exhibits no systematic biases that would compromise scientific analysis and is ready for environmental quenching research in cosmic voids.
-
-### **Quality Metrics**
-
-| **Metric** | **Value** | **Assessment** |
-|------------|-----------|----------------|
-| **Galaxy Sample Size** | 6,342,556 | ✅ Excellent |
-| **Data Retention Rate** | 98.4% | ✅ Minimal outlier removal |
-| **Mass Range** | 6.0 - 13.0 log(M☉) | ✅ Survey-appropriate |
-| **Void Sample Size** | 10,752 | ✅ Sufficient for statistics |
-| **Algorithm Coverage** | 4 methods | ✅ Comprehensive systematic test |
-| **Correlation Assessment** | Survey selection identified | ✅ Properly characterized |
+**Scientific Conclusion**: The DESI DR1 cosmic void galaxy analysis dataset has passed comprehensive physical plausibility validation. The data exhibits no systematic biases that would compromise scientific analysis and is ready for environmental quenching research in cosmic voids.
 
 ---
 
@@ -303,6 +275,17 @@ The validated dataset is scientifically sound and ready for:
 2. **Generate control samples** using validated mass and redshift distributions
 3. **Implement systematic uncertainty analysis** across all four void-finding algorithms
 4. **Document methodology** for peer review and Value-Added Catalog publication
+
+---
+
+## **📁 Related Documentation**
+
+| **Category** | **Link** | **Description** |
+|--------------|----------|-----------------|
+| **Phase 1 Validation** | [../phase-1-data-integrity/README.md](../phase-1-data-integrity/README.md) | Prerequisite database integrity validation |
+| **Validation Summary** | [phase-2-validation-summary.md](phase-2-validation-summary.md) | Detailed scientific results and certification |
+| **Source Code** | [../../src/dataset-validations/validate_stage2_physical_plausibility.py](../../src/dataset-validations/validate_stage2_physical_plausibility.py) | Fully commented validation script |
+| **Project Overview** | [../../README.md](../../README.md) | Complete project documentation |
 
 ---
 

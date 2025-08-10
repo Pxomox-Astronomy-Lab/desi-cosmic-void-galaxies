@@ -3,26 +3,32 @@
 #
 # File: validate_stage1_integrity.py
 #
-# Author: vintagedon
+# Author: VintageDon https://github.com/vintagedon/
 # Repository: https://github.com/Pxomox-Astronomy-Lab/desi-cosmic-void-galaxies
 #
 # Description:
-# This script performs the Stage 1 Foundational Database Integrity validation for the
-# DESI Cosmic Void Galaxies project. It is designed to be the first crucial step in the
-# data validation pipeline, ensuring that the input catalogs (FastSpecFit and DESIVAST)
-# have been ingested into the PostgreSQL database correctly and that the database is
-# structurally sound before any scientific analysis is performed.
+#   This script performs Stage 1: Foundational Database Integrity validation. It is the
+#   first and most fundamental check in the data validation pipeline, executed immediately
+#   after the raw DESI DR1 catalogs have been ingested into the PostgreSQL database.
 #
-# The script executes a series of checks, including:
-#   - Schema and table existence verification.
-#   - Row count validation against expected values.
-#   - Primary key uniqueness to prevent data ambiguity.
-#   - Assessment of NULL values in critical science columns to gauge completeness.
-#   - Basic range checks on physical quantities like coordinates and redshift.
+#   The purpose of this stage is not to assess scientific content, but to rigorously
+#   verify that the data is structurally sound, self-consistent, and free from
+#   [cite_start]corruption. [cite: 54, 55] It confirms that the database provides a reliable technical
+#   foundation upon which all subsequent scientific validation and analysis can be built.
 #
-# A successful run of this script provides confidence that the data is ready for
-# the more intensive Stage 2 (Physical Plausibility) and Stage 3 (Scientific
-# Robustness) validation phases.
+#   The script executes a series of programmatic checks based on the project's
+#   database schema, including:
+#     - Schema Verification: Confirms that all expected tables, columns, and data
+#       [cite_start]types exist as defined. [cite: 57, 58, 59, 60]
+#     - Uniqueness Checks: Ensures primary keys (e.g., `targetid`) are unique,
+#       [cite_start]preventing data ambiguity. [cite: 62, 64, 65]
+#     - Relational Integrity: Verifies that no "orphan" records exist in mapping
+#       [cite_start]tables, confirming that all foreign keys link to valid entries. [cite: 73, 74]
+#     - Null Value Census: Systematically quantifies NULL or non-physical values in
+#       [cite_start]critical science columns to assess data completeness. [cite: 86, 87]
+#
+#   A successful run of this script is a mandatory prerequisite for proceeding to the
+#   [cite_start]Stage 2 physical plausibility analysis. [cite: 55]
 #
 # =================================================================================================
 #
