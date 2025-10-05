@@ -69,9 +69,9 @@ This project's efficiency stems from leveraging existing, high-quality DESI DR1 
 
 ### **Primary Data Sources:**
 
-- **DESIVAST VAC:** Cosmic void catalog with positions, redshifts, and effective radii (~1.2GB)
-- **FastSpecFit VAC:** Galaxy properties catalog providing stellar masses and SFR measurements (~26.4GB)
-- **Total Data Volume:** 27.6GB
+- **DESIVAST VAC:** Cosmic void catalog with ~10,752 voids (4 algorithms: VIDE, ZOBOV, REVOLVER, VoidFinder)
+- **FastSpecFit VAC:** Galaxy properties catalog with 6.4M galaxies providing stellar masses and SFR measurements
+- **Total Data Volume:** ~30GB in PostgreSQL (3-5GB Parquet release)
 
 ### **Data Architecture Advantage:**
 
@@ -85,7 +85,7 @@ This project's efficiency stems from leveraging existing, high-quality DESI DR1 
 
 ```mermaid
 graph TD
-    A[DESI DR1 Galaxy Sample<br/>🌌 ~13.1M Galaxies] --> B[DESIVAST Void Catalog<br/>🕳️ Cosmic Void Positions]
+    A[DESI DR1 Galaxy Sample<br/>🌌 6.4M Galaxies] --> B[DESIVAST Void Catalog<br/>🕳️ 10.7K Cosmic Voids]
     A --> C[Galaxy Properties VAC<br/>⭐ Stellar Mass + SFR]
     B --> D[3D Spatial Cross-Match<br/>📍 Comoving Distance Calculation]
     C --> D
@@ -127,15 +127,15 @@ graph TD
 
 ### **🖥️ Computational Infrastructure:**
 
-- **Database Server:** proj-pg01 (8 vCPU, 48GB RAM, 250GB NVMe)
+- **Database Server:** proj-pg01 (8 vCPU, 48GB RAM, 250GB Samsung PM983 NVMe)
 - **Analysis Platform:** proj-dp01 (4 vCPU, 16GB RAM, 100GB NVMe)
 - **Backup Infrastructure:** pbs01 with 4TB storage and S3 Glacier archival
 
 ### **⚡ Software Stack:**
 
-- **🐍 Language:** Python 3.9+ with scientific computing libraries
+- **🐍 Language:** Python 3.11+ with scientific computing libraries
 - **🗄️ Database:** PostgreSQL 16 for catalog operations and spatial queries
-- **🌌 Astronomy:** AstroPy for coordinate systems and cosmological calculations
+- **🌌 Astronomy:** AstroPy 5.3+ for coordinate systems and cosmological calculations
 - **📊 Data Analysis:** Pandas, NumPy for tabular data manipulation
 - **📈 Statistical Tools:** SciPy.stats for significance testing and statistical analysis
 - **📊 Visualization:** Matplotlib, Seaborn for publication-quality scientific plots
@@ -151,23 +151,29 @@ graph TD
 
 ## 🚀 **Project Status**
 
-**Current Phase:** Infrastructure deployment and repository setup  
-**Next Milestone:** Database implementation and data ingestion pipeline  
-**Timeline:** 12-week roadmap from setup to publication
+**Current Phase:** Dataset packaging and publication preparation  
+**Next Milestone:** Public data release with ML enrichment  
+**Timeline:** Dataset v1.0 release October 2025
 
 ### **Development Phases:**
 
 | **Phase** | **Duration** | **Key Deliverable** | **Status** |
 |-----------|-------------|-------------------|------------|
-| **Environment Setup** | 1 Week | Python environment and dependencies | 🔄 In Progress |
-| **Database Architecture** | 1 Week | PostgreSQL schema and optimization | ⏳ Pending |
-| **Data Ingestion** | 1 Week | 27.6GB DESI data loaded | ⏳ Pending |
-| **Scientific Analysis** | 2 Weeks | Environmental classification and statistics | ⏳ Pending |
-| **Visualization** | 1 Week | Publication-quality figures | ⏳ Pending |
-| **Manuscript** | 3 Weeks | Complete scientific paper | ⏳ Pending |
-| **Review & Submission** | 2 Weeks | Journal submission | ⏳ Pending |
+| **Data Acquisition** | Complete | FITS download and inspection | ✅ Complete (2025-07-02) |
+| **Database Architecture** | Complete | PostgreSQL schema and optimization | ✅ Complete (2025-07-14) |
+| **Data Ingestion** | Complete | 6.4M galaxies + 10.7K voids loaded | ✅ Complete (2025-07-14) |
+| **Stage 1 Validation** | Complete | Integrity checks (row counts, PKs, nulls) | ✅ Complete (2025-08-04) |
+| **Stage 2 Validation** | Complete | Physical plausibility (z-range, mass-z) | ✅ Complete (2025-08-05) |
+| **Systematics Analysis** | Complete | Cross-algorithm void comparison | ✅ Complete (2025-08-05) |
+| **Dataset Packaging** | In Progress | Parquet export, documentation, notebooks | 🔄 In Progress |
+| **Public Release** | Pending | Multi-platform dissemination (Zenodo, HuggingFace) | ⏳ Q4 2025 |
 
-**Early Win Strategy:** This project provides systematic validation of the lab's analytical capabilities and produces publishable results while more infrastructure-intensive projects develop their pipelines.
+**Validation Summary:**
+
+- ✅ **6,445,927 galaxies** ingested (98.4% retention post-QA cuts)
+- ✅ **~10,752 voids** across 4 algorithms (VIDE, ZOBOV, REVOLVER, VoidFinder)
+- ✅ Redshift range: z ∈ [0.001, 1.02], median ~0.31
+- ✅ Cross-algorithm systematics: Δ quenched fraction ≈ 0.027 (Cohen's d ≈ 0.063)
 
 ---
 
@@ -179,6 +185,7 @@ desi-cosmic-void-galaxies/
 ├── 🏗️ infrastructure/          # Database, deployment, and operations documentation
 ├── 💻 src/                     # Source code and analysis workflows
 ├── 🛠️ scripts/                 # Repository management and utility scripts
+├── 📊 validation/              # Quality assurance reports and plots
 ├── 📋 ROADMAP.md              # Detailed implementation roadmap
 ├── 📝 README.md               # This file
 └── 📄 LICENSE                 # MIT License
@@ -206,8 +213,8 @@ This project is part of the **Proxmox Astronomy Lab** research program:
 ### **External Resources:**
 
 - **🔭 DESI DR1:** [Official DESI Data Portal](https://data.desi.lbl.gov/doc/releases/dr1/) - Primary galaxy dataset
-- **🕳️ DESIVAST VAC:** DESI DR1 cosmic void catalog for environmental classification
-- **⭐ Galaxy Properties VACs:** FastSpecFit/Mass EMLines catalogs for stellar masses and SFR
+- **🕳️ DESIVAST VAC:** [DESI DR1 Void Catalog](https://data.desi.lbl.gov/doc/releases/dr1/vac/desivast/) - Cosmic void identification
+- **⭐ FastSpecFit VAC:** [Galaxy Properties Catalog](https://data.desi.lbl.gov/doc/releases/dr1/vac/fastspecfit/) - Stellar masses and SFR
 
 ---
 
@@ -247,8 +254,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **DESI Cosmic Void Galaxies** demonstrates responsible environmental studies through systematic statistical methods, open science principles, and transparent methodology. Built on public DESI data and open-source analysis tools, this project contributes to the astronomical community through precision environmental measurements and enriched catalog products.
 
+### **Data Sources:**
+
+- **DESI Collaboration** - Data Release 1 public catalogs
+- **DESIVAST Team** - Cosmic void identification across 4 algorithms
+- **FastSpecFit Team** - Galaxy stellar population synthesis
+
+### **Infrastructure:**
+
+- **Proxmox Astronomy Lab** - 7-node research cluster
+- **proj-pg01** - PostgreSQL 16 primary database (Samsung PM983 NVMe, 3GB/s read)
+- **proj-dp01** - Python processing workstation
+
 ---
 
 **🌌 Built for precision environmental studies | Part of Proxmox Astronomy Lab**
 
-*Documentation generated July 1, 2025*
+*Last Updated: October 4, 2025*
